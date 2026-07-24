@@ -22,6 +22,23 @@ pip install torch numpy scipy pandas matplotlib
 | `fair_fem_timing.py` | Amortized (factorization-reuse) FEM timing across mesh refinement |
 | `aliasing_quantification.py` | Spectral aliasing of the equilibrium operator + conditioning of the coefficient-to-feature map |
 
+## Strong-baseline benchmark (reframed study)
+
+These scripts add the strong classical baselines and the heterogeneous
+modulus-field benchmark used in the accuracy–speed–memory comparison.
+
+| Script | Purpose |
+|---|---|
+| `rom_baseline.py` | POD–Galerkin reduced-order model on the fixed-operator (K=16) benchmark; sweeps POD rank, reports error, online cost, and on-disk basis size |
+| `hetero_field.py` | Route-B physics: random log-normal `E(x)`-field Q4 FEM. `K(E)=Σ_e E_e K_e^{(1)}` re-factorized per query. `--selftest` verifies `E≡1` reproduces the homogeneous solver and checks mesh convergence |
+| `hetero_field_gen.py` | Ground-truth generator for the `E(x)`-field benchmark (chunk-friendly for Slurm arrays; `--merge` to assemble) |
+| `route_b.py` | Trains the `E(x)`-conditioned models: `spectral_e` (exact-BC sine trunk, branch ingests f + cosine projection of log E) and `fno_e` (5-channel FNO); variable-coefficient Navier–Cauchy residual |
+| `eval_route_b.py` | Capstone eval of a trained checkpoint: field accuracy, UQ-propagation QoI distributions (strain energy, peak von Mises), and the resource ledger row |
+| `rom_field.py` | POD–Galerkin ROM over the `E(x)` family (per-query assemble + project + solve); POD floor, ROM error, and the rank-vs-cost cliff |
+| `ledger.py` | Master accuracy–time–RAM–disk ledger across a resolution sweep for FEM and ROM on both benchmarks (`--driver`); per-method RAM measured in isolated subprocesses |
+| `make_figures.py` | Generates the benchmark figures (accuracy–cost Pareto, POD spectra, ROM cost cliff) from the ledger/ROM JSONs |
+| `cluster/*.sh` | Slurm job scripts (RIT SPORC) for data generation, training, ROM/ledger runs, and evaluation |
+
 ## Typical reproduction order
 
 ```bash
