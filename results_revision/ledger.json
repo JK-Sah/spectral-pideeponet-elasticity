@@ -1,0 +1,135 @@
+[
+  {
+    "err": 0.04113423451781273,
+    "time_ms": 0.13994082692079246,
+    "disk_MB": 0.139104,
+    "peak_rss_MB": 552.8828125,
+    "bench": "A",
+    "method": "fem",
+    "res": 15,
+    "rank": 0
+  },
+  {
+    "err": 0.009908556938171387,
+    "time_ms": 0.6217581161763519,
+    "disk_MB": 0.958544,
+    "peak_rss_MB": 692.7421875,
+    "bench": "A",
+    "method": "fem",
+    "res": 29,
+    "rank": 0
+  },
+  {
+    "err": 0.0024547057691961527,
+    "time_ms": 3.3440595370484516,
+    "disk_MB": 7.6668,
+    "peak_rss_MB": 1241.078125,
+    "bench": "A",
+    "method": "fem",
+    "res": 57,
+    "rank": 0
+  },
+  {
+    "err": 0.0006122891791164875,
+    "time_ms": 19.205396680627018,
+    "disk_MB": 50.37464,
+    "peak_rss_MB": 3420.5078125,
+    "bench": "A",
+    "method": "fem",
+    "res": 113,
+    "rank": 0
+  },
+  {
+    "err": 0.2737884223461151,
+    "time_ms": 0.06419459998141974,
+    "disk_MB": 0.188672,
+    "peak_rss_MB": 690.56640625,
+    "bench": "A",
+    "method": "rom",
+    "res": 29,
+    "rank": 16
+  },
+  {
+    "err": 0.009908556938171387,
+    "time_ms": 0.08614294463768601,
+    "disk_MB": 0.38144,
+    "peak_rss_MB": 693.0390625,
+    "bench": "A",
+    "method": "rom",
+    "res": 29,
+    "rank": 32
+  },
+  {
+    "err": 0.009908556938171387,
+    "time_ms": 0.11144176998641342,
+    "disk_MB": 0.779264,
+    "peak_rss_MB": 690.921875,
+    "bench": "A",
+    "method": "rom",
+    "res": 29,
+    "rank": 64
+  },
+  {
+    "err": 0.00858473830395264,
+    "time_ms": 10.84374069236219,
+    "disk_MB": 0.959344,
+    "note": "per-query (no reuse)",
+    "peak_rss_MB": 528.0859375,
+    "bench": "B",
+    "method": "fem",
+    "res": 29,
+    "rank": 0
+  },
+  {
+    "err": null,
+    "time_ms": 68.00578841735842,
+    "disk_MB": 7.669488,
+    "note": "per-query (no reuse)",
+    "peak_rss_MB": 562.328125,
+    "bench": "B",
+    "method": "fem",
+    "res": 57,
+    "rank": 0
+  },
+  {
+    "err": null,
+    "time_ms": 440.987653232296,
+    "disk_MB": 50.38584,
+    "note": "per-query (no reuse)",
+    "peak_rss_MB": 774.49609375,
+    "bench": "B",
+    "method": "fem",
+    "res": 113,
+    "rank": 0
+  },
+  {
+    "err": 0.13674177504028953,
+    "time_ms": 2.5558864398044534,
+    "disk_MB": 0.38144,
+    "peak_rss_MB": 702.515625,
+    "bench": "B",
+    "method": "rom",
+    "res": 29,
+    "rank": 32
+  },
+  {
+    "err": 0.03445907416407958,
+    "time_ms": 3.2921985525172204,
+    "disk_MB": 0.779264,
+    "peak_rss_MB": 702.3828125,
+    "bench": "B",
+    "method": "rom",
+    "res": 29,
+    "rank": 64
+  },
+  {
+    "err": 0.009868642742601212,
+    "time_ms": 5.013145252596587,
+    "disk_MB": 1.624064,
+    "peak_rss_MB": 702.41015625,
+    "bench": "B",
+    "method": "rom",
+    "res": 29,
+    "rank": 128
+  }
+]
