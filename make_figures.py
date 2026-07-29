@@ -75,6 +75,7 @@ axB.legend(fontsize=7.3, loc="lower left")
 
 fig.tight_layout()
 fig.savefig(OUT / "Figure_11_pareto.pdf")
+fig.savefig(OUT / "Fig11.eps")
 plt.close(fig)
 
 # ---------------------------------------------------------------- Fig 12
@@ -92,6 +93,7 @@ ax.set_title("POD spectra: Kolmogorov $n$-width")
 ax.legend(fontsize=8.5)
 fig.tight_layout()
 fig.savefig(OUT / "Figure_12_pod_spectrum.pdf")
+fig.savefig(OUT / "Fig12.eps")
 plt.close(fig)
 
 # ---------------------------------------------------------------- Fig 13
@@ -120,6 +122,7 @@ ax1.legend(l1 + l2, la1 + la2, fontsize=7.6, loc="center left")
 ax1.set_title("Heterogeneous ROM: accuracy and cost vs rank")
 fig.tight_layout()
 fig.savefig(OUT / "Figure_13_rom_cliff.pdf")
+fig.savefig(OUT / "Fig13.eps")
 plt.close(fig)
 
 # ---------------------------------------------------------------- Fig 14 (crossover)
@@ -149,7 +152,40 @@ axs.set_ylabel(r"Displacement rel. $L^2$ error")
 axr.legend(fontsize=7.6, loc="lower left")
 fig.tight_layout()
 fig.savefig(OUT / "Figure_14_crossover.pdf")
+fig.savefig(OUT / "Fig14.eps")
+plt.close(fig)
+
+# ---------------------------------------------------------------- Fig 15 (nonlinear)
+# Finite-strain hyperelasticity: the neural operator dominates the reduced-order
+# models -- the flip from the linear case.
+nl = json.load(open(RES / "nonlinear" / "ledger.json"))
+fig, ax = plt.subplots(figsize=(5.8, 4.4))
+style = {
+    "POD-Galerkin(r=32)": ("POD--Galerkin", C_ROM, "s"),
+    "POD-DEIM(r=32,m=128)": ("POD--DEIM (hyper-reduced)", "#2166ac", "^"),
+    "FNO": ("FNO", C_FNO, "P"),
+    "Spectral": ("Spectral DeepONet", C_SPEC, "D"),
+}
+for key, (lab, col, mk) in style.items():
+    d = nl[key]
+    ax.plot([d["ms"]], [d["err"]], mk, color=col, markersize=12, label=lab)
+# Newton-FEM is exact (err=0): draw as a reference line at its cost.
+ax.axvline(nl["Newton-FEM"]["ms"], color=C_FEM, ls="--", lw=1.4)
+ax.annotate("Newton-FEM\n(exact, %.1f s)" % (nl["Newton-FEM"]["ms"]/1000),
+            (nl["Newton-FEM"]["ms"], 0.011), fontsize=8, color=C_FEM,
+            ha="right", va="center", rotation=90)
+ax.set_xscale("log"); ax.set_yscale("log")
+ax.set_xlabel("Per-query time (ms)")
+ax.set_ylabel(r"Displacement rel. $L^2$ error")
+ax.set_title("Finite-strain hyperelasticity: the neural operator\n"
+             "dominates the reduced-order models")
+ax.legend(fontsize=8.5, loc="center", framealpha=0.95)
+ax.text(0.5, 0.93, "neural: matched accuracy, orders of magnitude lower cost",
+        transform=ax.transAxes, fontsize=8.5, color="#555555", ha="center")
+fig.tight_layout()
+fig.savefig(OUT / "Figure_15_nonlinear.pdf")
+fig.savefig(OUT / "Fig15.eps")
 plt.close(fig)
 
 print("wrote Figure_11_pareto.pdf, Figure_12_pod_spectrum.pdf, "
-      "Figure_13_rom_cliff.pdf, Figure_14_crossover.pdf")
+      "Figure_13_rom_cliff.pdf, Figure_14_crossover.pdf, Figure_15_nonlinear.pdf")
