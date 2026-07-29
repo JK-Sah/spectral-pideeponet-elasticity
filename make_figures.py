@@ -113,12 +113,14 @@ ax2.axhline(femB_ms, color=C_FEM, ls="--", lw=1.3, label=f"FEM/query ({femB_ms:.
 ax2.axhline(0.03, color=C_SPEC, ls=":", lw=1.3, label="Surrogate inference (0.03 ms)")
 ax2.set_ylabel("Per-query time (ms)", color=C_FNO)
 ax2.set_yscale("log"); ax2.tick_params(axis="y", labelcolor=C_FNO)
-ax2.annotate("cost cliff\n(overtakes FEM)", (256, 69),
-             textcoords="offset points", xytext=(-70, -6), fontsize=8,
-             color="#333333", arrowprops=dict(arrowstyle="->", color="#333333"))
+ax2.annotate("cost cliff\n(overtakes FEM)", xy=(256, 64),
+             xytext=(0.40, 0.82), textcoords=ax2.transAxes,
+             fontsize=8, color="#333333", ha="center", va="center",
+             arrowprops=dict(arrowstyle="->", color="#333333"))
 
 l1, la1 = ax1.get_legend_handles_labels(); l2, la2 = ax2.get_legend_handles_labels()
-ax1.legend(l1 + l2, la1 + la2, fontsize=7.6, loc="center left")
+ax1.legend(l1 + l2, la1 + la2, fontsize=7.2, loc="center",
+           bbox_to_anchor=(0.63, 0.30), framealpha=0.92)
 ax1.set_title("Heterogeneous ROM: accuracy and cost vs rank")
 fig.tight_layout()
 fig.savefig(OUT / "Figure_13_rom_cliff.pdf")
