@@ -56,3 +56,19 @@ python linear_baseline.py
 python hetero_linear.py
 python revision_final_additions.py --lsfem_stress_table
 ```
+
+## Nonlinear benchmark (finite-strain hyperelasticity)
+
+The complement to the linear study: on a genuinely nonlinear operator the
+learned surrogates move onto the accuracy--cost frontier and dominate even a
+hyper-reduced reduced-order model.
+
+| Script | Purpose |
+|---|---|
+| `nonlinear_fem.py` | Compressible Neo-Hookean plane-strain FEM (total-Lagrangian Q4, Newton--Raphson, analytical consistent tangent). `--selftest` verifies the tangent, the linear small-strain limit, and finite-strain convergence |
+| `nonlinear_gen.py` | Ground-truth generator: smooth body force → displacement via Newton FEM, scaled into the finite-strain regime |
+| `nonlinear_train.py` | Trains the `E`/nonlinear-conditioned spectral DeepONet and FNO on the hyperelastic map |
+| `pod_deim.py` | The classical reduced-order baselines: POD--Galerkin reduced Newton and the hyper-reduced POD--DEIM (trajectory force snapshots, greedy point selection, sample-mesh assembly). `--selftest` verifies both |
+| `nonlinear_ledger.py` | Final accuracy--cost ledger (Newton-FEM, POD--Galerkin, POD--DEIM, neural), all timed on one CPU with the analytical tangent |
+| `nonlinear_rom.py` | Standalone reduced-order-model utilities for the nonlinear case |
+| `make_figures.py` | Figures 14 (smooth/rough crossover) and 15 (nonlinear Pareto) |
