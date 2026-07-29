@@ -46,9 +46,9 @@ rk = romA["ranks"]
 axA.plot([d["online_us"]/1000 for d in rk], [d["rel_l2_u"] for d in rk], "-s",
          color=C_ROM, label="POD--Galerkin ROM (rank)")
 axA.plot([0.01], [4e-6], "*", color=C_CF, markersize=15, label="Closed-form LS")
-axA.plot([0.01], [0.0839], "D", color=C_SPEC, label="PI-spectral DeepONet")
-axA.plot([0.77], [0.1274], "P", color=C_FNO, label="FNO")
-axA.plot([0.01], [0.2299], "v", color="#999999", label="Data-only spectral")
+axA.plot([0.022], [0.0839], "D", color=C_SPEC, label="PI-spectral DeepONet")
+axA.plot([1.07], [0.1274], "P", color=C_FNO, label="FNO")
+axA.plot([0.022], [0.2299], "v", color="#999999", label="Data-only spectral")
 axA.set_xscale("log"); axA.set_yscale("log")
 axA.set_xlabel("Per-query time (ms)"); axA.set_ylabel(r"Displacement rel. $L^2$ error")
 axA.set_title("(a) Homogeneous, fixed operator")
@@ -66,8 +66,8 @@ for d in rb:
     if d["rank"] in (32, 128, 256):
         axB.annotate(f"r={d['rank']}", (d["online_ms"], d["rom_err"]),
                      textcoords="offset points", xytext=(4, 5), fontsize=7)
-axB.plot([0.03], [0.189], "P", color=C_FNO, label="FNO + physics")
-axB.plot([0.03], [0.384], "D", color=C_SPEC, label="PI-spectral DeepONet")
+axB.plot([1.45], [0.189], "P", color=C_FNO, label="FNO + physics")
+axB.plot([0.031], [0.384], "D", color=C_SPEC, label="PI-spectral DeepONet")
 axB.set_xscale("log"); axB.set_yscale("log")
 axB.set_xlabel("Per-query time (ms)"); axB.set_ylabel(r"Displacement rel. $L^2$ error")
 axB.set_title("(b) Heterogeneous $E(\\mathbf{x})$, per-query operator")
@@ -122,4 +122,34 @@ fig.tight_layout()
 fig.savefig(OUT / "Figure_13_rom_cliff.pdf")
 plt.close(fig)
 
-print("wrote Figure_11_pareto.pdf, Figure_12_pod_spectrum.pdf, Figure_13_rom_cliff.pdf")
+# ---------------------------------------------------------------- Fig 14 (crossover)
+# Smooth vs rough E(x): the Pareto frontier flips. On the smooth field the ROM
+# dominates and the FNO is off-frontier; on the rough field the ROM's cost
+# cliffs and the FNO moves onto the frontier.
+romR = json.load(open(RES / "rough" / "rom_field.json"))
+fig, (axs, axr) = plt.subplots(1, 2, figsize=(9.4, 4.2), sharey=True)
+
+def pareto_panel(ax, rom, fem_ms, fem_err, fno, spec, title):
+    rb = sorted(rom["ranks"], key=lambda d: d["rank"])
+    ax.plot([d["online_ms"] for d in rb], [d["rom_err"] for d in rb], "-s",
+            color=C_ROM, label="POD--Galerkin ROM (rank)")
+    ax.plot([fem_ms], [fem_err], "o", color=C_FEM, markersize=9,
+            label="FEM $28\\times28$ (per query)")
+    ax.plot([fno[0]], [fno[1]], "P", color=C_FNO, markersize=11, label="FNO")
+    ax.plot([spec[0]], [spec[1]], "D", color=C_SPEC, markersize=9,
+            label="Spectral DeepONet")
+    ax.set_xscale("log"); ax.set_yscale("log")
+    ax.set_xlabel("Per-query time (ms)"); ax.set_title(title)
+
+pareto_panel(axs, romB, 10.8, 0.0086, (1.45, 0.189), (0.031, 0.384),
+             "(a) Smooth $E(\\mathbf{x})$: ROM dominates")
+pareto_panel(axr, romR, 10.3, 0.0736, (1.45, 0.2448), (0.031, 0.7109),
+             "(b) Rough $E(\\mathbf{x})$: FNO reaches the frontier")
+axs.set_ylabel(r"Displacement rel. $L^2$ error")
+axr.legend(fontsize=7.6, loc="lower left")
+fig.tight_layout()
+fig.savefig(OUT / "Figure_14_crossover.pdf")
+plt.close(fig)
+
+print("wrote Figure_11_pareto.pdf, Figure_12_pod_spectrum.pdf, "
+      "Figure_13_rom_cliff.pdf, Figure_14_crossover.pdf")

@@ -100,6 +100,9 @@ def main():
     ap.add_argument("--stop", type=int, default=10**9)
     ap.add_argument("--res", type=int, default=29)
     ap.add_argument("--refine", type=int, default=4)
+    ap.add_argument("--corr", type=float, default=6.0,
+                    help="coarse correlation length; fine-grid sigma is refine*corr "
+                         "(6.0 = smooth default; ~1.0 = rough, high n-width)")
     ap.add_argument("--merge", action="store_true")
     ap.add_argument("--tags", nargs="+", default=["tr", "te"])
     ap.add_argument("--out", default="data/hetero_field.npz")
@@ -108,7 +111,7 @@ def main():
         merge(args.tags, args.out)
     else:
         gen_part(args.tag, args.n, args.seed, args.start, args.stop,
-                 res=args.res, refine=args.refine)
+                 res=args.res, refine=args.refine, corr=args.corr)
 
 
 if __name__ == "__main__":
