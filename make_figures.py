@@ -18,6 +18,7 @@ from pathlib import Path
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import numpy as np
 
 RES = Path("results_revision")
 OUT = Path("../CompMech_submission_ready")
@@ -173,17 +174,25 @@ for key, (lab, col, mk) in style.items():
     ax.plot([d["ms"]], [d["err"]], mk, color=col, markersize=12, label=lab)
 # Newton-FEM is exact (err=0): draw as a reference line at its cost.
 ax.axvline(nl["Newton-FEM"]["ms"], color=C_FEM, ls="--", lw=1.4)
-ax.annotate("Newton-FEM\n(exact, %.1f s)" % (nl["Newton-FEM"]["ms"]/1000),
-            (nl["Newton-FEM"]["ms"], 0.011), fontsize=8, color=C_FEM,
-            ha="right", va="center", rotation=90)
+errs_all = [nl[k]["err"] for k in style]
+ax.annotate("Newton-FEM (reference, %.0f ms)" % nl["Newton-FEM"]["ms"],
+            xy=(nl["Newton-FEM"]["ms"], np.sqrt(min(errs_all) * max(errs_all))),
+            fontsize=8, color=C_FEM, ha="right", va="center", rotation=90,
+            xytext=(-4, 0), textcoords="offset points")
 ax.set_xscale("log"); ax.set_yscale("log")
 ax.set_xlabel("Per-query time (ms)")
 ax.set_ylabel(r"Displacement rel. $L^2$ error")
-ax.set_title("Finite-strain hyperelasticity: the neural operator\n"
-             "dominates the reduced-order models")
-ax.legend(fontsize=8.5, loc="center", framealpha=0.95)
-ax.text(0.5, 0.93, "neural: matched accuracy, orders of magnitude lower cost",
-        transform=ax.transAxes, fontsize=8.5, color="#555555", ha="center")
+ax.set_title("Finite-strain hyperelasticity: a learned operator\n"
+             "reaches the accuracy-cost frontier")
+ax.legend(fontsize=8, loc="upper left", framealpha=0.95)
+ax.annotate("", xy=(nl["FNO"]["ms"], nl["FNO"]["err"]),
+            xytext=(nl["POD-Galerkin(r=32)"]["ms"], nl["POD-Galerkin(r=32)"]["err"]),
+            arrowprops=dict(arrowstyle="<->", color="#777777", lw=1.1))
+ax.text(np.sqrt(nl["FNO"]["ms"] * nl["POD-Galerkin(r=32)"]["ms"]),
+        nl["FNO"]["err"] * 0.90, "~8x", fontsize=9, color="#555555",
+        ha="center", va="top")
+ax.text(0.02, 0.03, "matched accuracy, ~8x lower cost per query",
+        transform=ax.transAxes, fontsize=8, color="#555555", ha="left")
 fig.tight_layout()
 fig.savefig(OUT / "Figure_15_nonlinear.pdf")
 fig.savefig(OUT / "Fig15.eps")
