@@ -1,6 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+NOTE -- the DEIM online stage in this file is NOT fully reduced.
+
+reduced_deim_solve() forms the full displacement vector each iteration,
+assembles the sampled tangent into a full n_dof x n_dof matrix, and contracts
+it with the full-dimensional POD basis, so its online cost scales with the
+number of free degrees of freedom rather than with the number of
+interpolation points.  The POD-Galerkin routines here are unaffected and are
+still used.
+
+Use pod_deim_v2.py for the hyper-reduced solve: it indexes everything on the
+sample mesh, so the online cost is O(m * n_sample * r) per Newton iteration.
+
+
 pod_deim.py
 
 Reduced-order models for the finite-strain hyperelastic benchmark, built as

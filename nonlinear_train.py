@@ -1,6 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+SUPERSEDED -- retained for provenance, do not use for new results.
+
+This script selects the reported error by taking the minimum over periodic
+evaluations of the TEST set, with no validation split, and saves no
+checkpoint.  That is model selection on the test set: the number it prints is
+a best-epoch-on-test value, not a held-out estimate.  The referee on
+CM-26-0573 identified this, correctly.
+
+Use nonlinear_train_v2.py instead, which splits a validation set out of the
+training pool, selects the checkpoint on validation only, evaluates the test
+set exactly once, and saves the selected weights.  Re-running the corrected
+protocol changed the reported finite-strain errors by less than 0.15
+percentage points -- the measured optimism was zero -- but the protocol here
+is not sound and this file should not be used.
+
+
 nonlinear_train.py
 
 Train data-only neural operators (spectral DeepONet, FNO) on the finite-strain
