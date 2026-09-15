@@ -18,6 +18,7 @@ from pathlib import Path
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import numpy as np
 
 RES = Path("results_revision")
 OUT = Path("../CompMech_submission_ready")
@@ -45,13 +46,17 @@ axA.plot([r["time_ms"] for r in fem], [r["err"] for r in fem], "-o",
 rk = romA["ranks"]
 axA.plot([d["online_us"]/1000 for d in rk], [d["rel_l2_u"] for d in rk], "-s",
          color=C_ROM, label="POD--Galerkin ROM (rank)")
-axA.plot([0.01], [4e-6], "*", color=C_CF, markersize=15, label="Closed-form LS")
-axA.plot([0.022], [0.0839], "D", color=C_SPEC, label="PI-spectral DeepONet")
-axA.plot([1.07], [0.1274], "P", color=C_FNO, label="FNO")
-axA.plot([0.022], [0.2299], "v", color="#999999", label="Data-only spectral")
+# Canonical configuration, single-query latency (not batched throughput), so
+# the learned points are directly comparable with the classical solves.
+axA.plot([0.88], [4e-6], "*", color=C_CF, markersize=15, label="Closed-form LS")
+axA.plot([1.08], [0.0164], "X", color="#1b9e77", markersize=11,
+         label="PI-spectral, LS-anchored")
+axA.plot([1.05], [0.0874], "D", color=C_SPEC, label="PI-spectral (plain)")
+axA.plot([15.9], [0.1112], "P", color=C_FNO, label="FNO")
+axA.plot([1.08], [0.2291], "v", color="#999999", label="Data-only spectral")
 axA.set_xscale("log"); axA.set_yscale("log")
 axA.set_xlabel("Per-query time (ms)"); axA.set_ylabel(r"Displacement rel. $L^2$ error")
-axA.set_title("(a) Homogeneous, fixed operator")
+axA.set_title("(a) Homogeneous, fixed operator\n(single-query latency)")
 axA.legend(fontsize=7.3, loc="lower left")
 
 # -- heterogeneous panel --
@@ -173,17 +178,25 @@ for key, (lab, col, mk) in style.items():
     ax.plot([d["ms"]], [d["err"]], mk, color=col, markersize=12, label=lab)
 # Newton-FEM is exact (err=0): draw as a reference line at its cost.
 ax.axvline(nl["Newton-FEM"]["ms"], color=C_FEM, ls="--", lw=1.4)
-ax.annotate("Newton-FEM\n(exact, %.1f s)" % (nl["Newton-FEM"]["ms"]/1000),
-            (nl["Newton-FEM"]["ms"], 0.011), fontsize=8, color=C_FEM,
-            ha="right", va="center", rotation=90)
+errs_all = [nl[k]["err"] for k in style]
+ax.annotate("Newton-FEM (reference, %.0f ms)" % nl["Newton-FEM"]["ms"],
+            xy=(nl["Newton-FEM"]["ms"], np.sqrt(min(errs_all) * max(errs_all))),
+            fontsize=8, color=C_FEM, ha="right", va="center", rotation=90,
+            xytext=(-4, 0), textcoords="offset points")
 ax.set_xscale("log"); ax.set_yscale("log")
 ax.set_xlabel("Per-query time (ms)")
 ax.set_ylabel(r"Displacement rel. $L^2$ error")
-ax.set_title("Finite-strain hyperelasticity: the neural operator\n"
-             "dominates the reduced-order models")
-ax.legend(fontsize=8.5, loc="center", framealpha=0.95)
-ax.text(0.5, 0.93, "neural: matched accuracy, orders of magnitude lower cost",
-        transform=ax.transAxes, fontsize=8.5, color="#555555", ha="center")
+ax.set_title("Finite-strain hyperelasticity: a learned operator\n"
+             "reaches the accuracy-cost frontier")
+ax.legend(fontsize=8, loc="upper left", framealpha=0.95)
+ax.annotate("", xy=(nl["FNO"]["ms"], nl["FNO"]["err"]),
+            xytext=(nl["POD-Galerkin(r=32)"]["ms"], nl["POD-Galerkin(r=32)"]["err"]),
+            arrowprops=dict(arrowstyle="<->", color="#777777", lw=1.1))
+ax.text(np.sqrt(nl["FNO"]["ms"] * nl["POD-Galerkin(r=32)"]["ms"]),
+        nl["FNO"]["err"] * 0.90, "~8x", fontsize=9, color="#555555",
+        ha="center", va="top")
+ax.text(0.02, 0.03, "matched accuracy, ~8x lower cost per query",
+        transform=ax.transAxes, fontsize=8, color="#555555", ha="left")
 fig.tight_layout()
 fig.savefig(OUT / "Figure_15_nonlinear.pdf")
 fig.savefig(OUT / "Fig15.eps")

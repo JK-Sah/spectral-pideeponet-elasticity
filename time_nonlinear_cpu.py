@@ -1,5 +1,18 @@
 #!/usr/bin/env python3
-"""Time the nonlinear neural operators' inference on the same CPU as the ledger."""
+"""
+SUPERSEDED -- retained for provenance, do not use for new results.
+
+This script measures BATCHED THROUGHPUT (batch 128, eight threads, random
+inputs, freshly instantiated weights) and divides total runtime by the sample
+count.  The resulting figure is not comparable with a Newton solve or a
+reduced solve, which are issued one query at a time, and reporting it beside
+them overstated the neural speedup by roughly an order of magnitude.
+
+Use timing_v2.py instead, which reports single-query latency and batched
+throughput separately, from trained checkpoints, on real test inputs, under a
+stated warm-up and repetition protocol.
+
+Time the nonlinear neural operators' inference on the same CPU as the ledger."""
 import time, torch
 from cmame_extended_study import (PhysicsConfig, build_modes,
                                   SpectralPIDeepONet, FNO2dElasticity)
