@@ -48,16 +48,28 @@ axA.plot([d["online_us"]/1000 for d in rk], [d["rel_l2_u"] for d in rk], "-s",
          color=C_ROM, label="POD--Galerkin ROM (rank)")
 # Canonical configuration, single-query latency (not batched throughput), so
 # the learned points are directly comparable with the classical solves.
-axA.plot([0.88], [4e-6], "*", color=C_CF, markersize=15, label="Closed-form LS")
-axA.plot([1.08], [0.0164], "X", color="#1b9e77", markersize=11,
-         label="PI-spectral, LS-anchored")
-axA.plot([1.05], [0.0874], "D", color=C_SPEC, label="PI-spectral (plain)")
+axA.plot([0.85], [3e-7], "*", color=C_CF, markersize=15, label="Closed-form LS")
+# Anchored branch at two trunk capacities: it improves with capacity and at
+# M=64 overtakes both general-purpose classical solvers.
+axA.plot([1.08, 2.51], [0.0164, 0.0043], "-X", color="#1b9e77", markersize=10,
+         label="PI-spectral, LS-anchored ($M$=16, 64)")
+# Plain branch over the same capacities: it degrades.
+axA.plot([1.05, 2.50], [0.0874, 0.1442], "-D", color=C_SPEC,
+         label="PI-spectral, plain ($M$=16, 64)")
 axA.plot([15.9], [0.1112], "P", color=C_FNO, label="FNO")
 axA.plot([1.08], [0.2291], "v", color="#999999", label="Data-only spectral")
+axA.annotate("$M$=64", xy=(2.51, 0.0043), xytext=(6, -12),
+             textcoords="offset points", fontsize=7.5, color="#1b9e77")
+axA.annotate("$M$=16", xy=(1.08, 0.0164), xytext=(-30, 4),
+             textcoords="offset points", fontsize=7.5, color="#1b9e77")
+axA.annotate("$M$=64", xy=(2.50, 0.1442), xytext=(6, 2),
+             textcoords="offset points", fontsize=7.5, color=C_SPEC)
 axA.set_xscale("log"); axA.set_yscale("log")
 axA.set_xlabel("Per-query time (ms)"); axA.set_ylabel(r"Displacement rel. $L^2$ error")
 axA.set_title("(a) Homogeneous, fixed operator\n(single-query latency)")
-axA.legend(fontsize=7.3, loc="lower left")
+axA.legend(fontsize=6.8, loc="upper center", bbox_to_anchor=(0.52, 1.005),
+           framealpha=0.93, ncol=2, columnspacing=0.8, handletextpad=0.4)
+axA.set_ylim(top=60.0)
 
 # -- heterogeneous panel --
 femB = rows("B", "fem")
@@ -81,6 +93,28 @@ axB.legend(fontsize=7.3, loc="lower left")
 fig.tight_layout()
 fig.savefig(OUT / "Figure_11_pareto.pdf")
 fig.savefig(OUT / "Fig11.eps")
+plt.close(fig)
+
+
+# ---------------------------------------------------------------- Fig 6 (seed repeatability)
+# Canonical configuration, seeds 42/43/44.  The earlier version of this figure
+# showed a different (sweep-optimum) setting and is superseded.
+seedm = json.load(open(RES / "linear" / "canonical_seed_metrics.json"))["per_seed"]
+keys = [("disp", "Disp."), ("strain", "Strain"), ("stress", "Stress"),
+        ("energy", "Energy")]
+means = [100 * np.mean([seedm[s][k] for s in seedm]) for k, _ in keys]
+stds = [100 * np.std([seedm[s][k] for s in seedm]) for k, _ in keys]
+fig, ax = plt.subplots(figsize=(5.6, 4.0))
+ax.bar([lab for _, lab in keys], means, yerr=stds, capsize=5,
+       color="#2166ac", edgecolor="black", linewidth=0.6)
+for i, (m, sd) in enumerate(zip(means, stds)):
+    ax.text(i, m + sd + 0.35, f"{m:.2f}%", ha="center", fontsize=8.5)
+ax.set_ylabel("Relative error (%)")
+ax.set_title("Canonical configuration: repeatability over three seeds")
+ax.set_ylim(0, max(m + sd for m, sd in zip(means, stds)) * 1.25)
+ax.grid(axis="x", visible=False)
+fig.tight_layout()
+fig.savefig(OUT / "Figure_6_seed_repeatability.pdf")
 plt.close(fig)
 
 # ---------------------------------------------------------------- Fig 12
@@ -202,5 +236,5 @@ fig.savefig(OUT / "Figure_15_nonlinear.pdf")
 fig.savefig(OUT / "Fig15.eps")
 plt.close(fig)
 
-print("wrote Figure_11_pareto.pdf, Figure_12_pod_spectrum.pdf, "
+print("wrote Figure_6_seed_repeatability.pdf, Figure_11_pareto.pdf, Figure_12_pod_spectrum.pdf, "
       "Figure_13_rom_cliff.pdf, Figure_14_crossover.pdf, Figure_15_nonlinear.pdf")

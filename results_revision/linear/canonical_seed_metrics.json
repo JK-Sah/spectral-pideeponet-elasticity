@@ -1,0 +1,8 @@
+{
+  "config": "canonical (Section: Canonical configuration), trunk M=16, seeds 42/43/44",
+  "per_seed": {
+    "42": {"disp": 0.092373, "strain": 0.120481, "stress": 0.094643, "energy": 0.093531, "pde_mse": 0.010541},
+    "43": {"disp": 0.085252, "strain": 0.111974, "stress": 0.088676, "energy": 0.063465, "pde_mse": 0.010310},
+    "44": {"disp": 0.084486, "strain": 0.114106, "stress": 0.096656, "energy": 0.061513, "pde_mse": 0.011204}
+  }
+}

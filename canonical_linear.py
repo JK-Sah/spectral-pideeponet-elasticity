@@ -117,6 +117,18 @@ def evaluate(model, f, u, dev, bs=100):
     return float(relative_l2(pr, u))
 
 
+def batched_ms_per_sample(model, f, batch=128, warm=3, reps=10):
+    """Amortized cost per sample when many queries are issued together."""
+    model.eval(); n = min(batch, f.shape[0])
+    with torch.no_grad():
+        for _ in range(warm):
+            model(f[:n])
+        ts = []
+        for _ in range(reps):
+            t0 = time.perf_counter(); model(f[:n]); ts.append((time.perf_counter()-t0)*1e3)
+    return float(np.median(ts)) / n
+
+
 def single_query_ms(model, f1, warm=5, reps=50):
     model.eval()
     with torch.no_grad():
@@ -166,13 +178,18 @@ def train(model, ds_tr, ds_va, phys, dev, seed, w_pde, tag, epochs=None):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--seeds", type=int, nargs="+", default=[42, 43, 44])
+    ap.add_argument("--trunk", type=int, default=None,
+                    help="spectral trunk capacity M (default: equal to the "
+                         "data-generation mode count K)")
+    ap.add_argument("--ckpt_dir", default="")
     ap.add_argument("--device", default="auto")
     ap.add_argument("--out", default="results_revision/canonical_linear.json")
     a = ap.parse_args()
     dev = get_device(a.device)
     phys = PhysicsConfig()
-    modes = build_modes(CFG["true_modes"])
-    print(f"device={dev}\ncanonical config: {CFG}")
+    M_trunk = a.trunk or CFG["true_modes"]
+    modes = build_modes(M_trunk)
+    print(f"device={dev}\ncanonical config: {CFG}\ntrunk M={M_trunk}")
 
     d_main = make_dataset(CFG["n_train"], CFG["n_test"], CFG["true_modes"],
                           CFG["coeff_scale"], phys,
@@ -191,11 +208,14 @@ def main():
     W, b = closed_form_readout(modes, st.make_grid(phys.res), tr[0], tr[1])
     cf = ClosedFormModel(W, b, modes, phys).to(dev)
     e_cf = evaluate(cf, te[0], te[1], dev)
-    ms_cf = single_query_ms(cf.cpu(), f1)
+    cf = cf.cpu()
+    ms_cf = single_query_ms(cf, f1)
+    msb_cf = batched_ms_per_sample(cf, te[0])
     npar_cf = int(W.size + b.size)
-    print(f"[closed-form ] test={e_cf:.5f}  {ms_cf:.3f} ms  params={npar_cf}")
+    print(f"[closed-form ] test={e_cf:.5f}  single={ms_cf:.3f} ms  "
+          f"batched={msb_cf:.4f} ms  params={npar_cf}")
     results["closed_form"] = dict(test_error=e_cf, single_query_ms=ms_cf,
-                                  n_params=npar_cf)
+                                  batched_ms_per_sample=msb_cf, n_params=npar_cf)
 
     for seed in a.seeds:
         for tag, w_pde in (("pi_spectral_plain", CFG["w_pde"]),
@@ -218,14 +238,23 @@ def main():
             n_ep = CFG["epochs_fno"] if tag == "fno" else CFG["epochs"]
             m, e_val, ep = train(m, tr, va, phys, dev, seed, w_pde, tag, epochs=n_ep)
             e_te = evaluate(m, te[0], te[1], dev)
-            ms = single_query_ms(m.cpu(), f1)
+            m = m.cpu()
+            ms = single_query_ms(m, f1)
+            msb = batched_ms_per_sample(m, te[0])
+            if a.ckpt_dir:
+                Path(a.ckpt_dir).mkdir(parents=True, exist_ok=True)
+                torch.save(dict(state_dict=m.state_dict(), model=tag, seed=seed,
+                                trunk=M_trunk),
+                           Path(a.ckpt_dir)/f"{tag}_M{M_trunk}_seed{seed}.pt")
             m.to(dev)
-            rec = dict(model=tag, seed=seed, w_pde=w_pde, val_error=e_val,
-                       test_error=e_te, selected_epoch=ep, n_params=int(npar),
-                       single_query_ms=ms, minutes=(time.time()-t0)/60)
+            rec = dict(model=tag, seed=seed, trunk=M_trunk, w_pde=w_pde,
+                       val_error=e_val, test_error=e_te, selected_epoch=ep,
+                       n_params=int(npar), single_query_ms=ms,
+                       batched_ms_per_sample=msb, minutes=(time.time()-t0)/60)
             results["runs"].append(rec)
-            print(f"[{tag:21s} s{seed}] val={e_val:.5f} test={e_te:.5f} "
-                  f"ep*={ep} params={npar} {ms:.3f} ms ({rec['minutes']:.1f} min)")
+            print(f"[{tag:21s} M{M_trunk} s{seed}] val={e_val:.5f} "
+                  f"test={e_te:.5f} ep*={ep} params={npar} "
+                  f"single={ms:.3f}ms batched={msb:.4f}ms ({rec['minutes']:.1f}min)")
 
     # Aggregate
     agg = {}
