@@ -1,0 +1,81 @@
+{
+  "protocol": {
+    "threads": 4,
+    "batch": 128,
+    "warm": 10,
+    "reps": 100,
+    "trunk": 16,
+    "weights": "trained checkpoints",
+    "inputs": "held-out test fields",
+    "statistic": "median over repetitions; across-seed spread reported"
+  },
+  "closed_form": {
+    "single_query": {
+      "median_ms": 0.9746435025590472,
+      "min_ms": 0.946271997236181,
+      "iqr_ms": 0.00518924935022369
+    },
+    "batched_per_sample": {
+      "median_ms": 0.01257955858591231,
+      "min_ms": 0.012380031250813772,
+      "iqr_ms": 0.00018261330581026414
+    },
+    "n_params": 1056
+  },
+  "pi_spectral_plain": {
+    "n_params": 123680,
+    "n_seeds": 3,
+    "single_query_ms": {
+      "median": 1.2112389995309059,
+      "lo": 1.0907415016845334,
+      "hi": 1.258028503798414
+    },
+    "batched_ms_per_sample": {
+      "median": 0.09013217970732512,
+      "lo": 0.016063699206370075,
+      "hi": 0.09117783594092543
+    }
+  },
+  "pi_spectral_anchored": {
+    "n_params": 124736,
+    "n_seeds": 3,
+    "single_query_ms": {
+      "median": 1.2586659977387171,
+      "lo": 1.249400000233436,
+      "hi": 1.2641324974538293
+    },
+    "batched_ms_per_sample": {
+      "median": 0.03968681642163574,
+      "lo": 0.03635641795085576,
+      "hi": 0.03976510936354316
+    }
+  },
+  "data_only_spectral": {
+    "n_params": 123680,
+    "n_seeds": 3,
+    "single_query_ms": {
+      "median": 1.292028999159811,
+      "lo": 1.283878504182212,
+      "hi": 1.2951805001648609
+    },
+    "batched_ms_per_sample": {
+      "median": 0.09326371090878638,
+      "lo": 0.09215763671477362,
+      "hi": 0.09401817968068826
+    }
+  },
+  "fno": {
+    "n_params": 465526,
+    "n_seeds": 3,
+    "single_query_ms": {
+      "median": 16.737533998821164,
+      "lo": 13.167860495741479,
+      "hi": 17.548510502820136
+    },
+    "batched_ms_per_sample": {
+      "median": 3.5397866367077313,
+      "lo": 1.6645958671972494,
+      "hi": 4.492743031249802
+    }
+  }
+}
