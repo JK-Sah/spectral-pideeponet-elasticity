@@ -1,0 +1,65 @@
+{
+  "protocol": {
+    "threads": 4,
+    "warm": 5,
+    "reps": 50,
+    "n_test": 200,
+    "note": "same allocation and thread count as timing_linear.py"
+  },
+  "fem": [
+    {
+      "res": 15,
+      "n_dof": 450,
+      "setup_ms": 13.245990965515375,
+      "solve_only_ms": 0.0801779970061034,
+      "amortized_ms": 0.14640795183368027,
+      "per_query_ms": 9.006561012938619
+    },
+    {
+      "res": 29,
+      "n_dof": 1682,
+      "setup_ms": 39.90077704656869,
+      "solve_only_ms": 0.4068360140081495,
+      "amortized_ms": 0.606339899240993,
+      "per_query_ms": 36.469448008574545
+    },
+    {
+      "res": 57,
+      "n_dof": 6498,
+      "setup_ms": 174.41203200723976,
+      "solve_only_ms": 1.9558110216166824,
+      "amortized_ms": 2.827871181652881,
+      "per_query_ms": 167.04062902135774
+    },
+    {
+      "res": 113,
+      "n_dof": 25538,
+      "setup_ms": 987.7250189892948,
+      "solve_only_ms": 12.353414000244811,
+      "amortized_ms": 17.292039095191285,
+      "per_query_ms": 901.5866660047323
+    }
+  ],
+  "rom": [
+    {
+      "rank": 8,
+      "online_ms": 0.016241538105532527
+    },
+    {
+      "rank": 16,
+      "online_ms": 0.01889848499558866
+    },
+    {
+      "rank": 32,
+      "online_ms": 0.03239448415115476
+    },
+    {
+      "rank": 64,
+      "online_ms": 0.07185048889368773
+    },
+    {
+      "rank": 128,
+      "online_ms": 0.1323354954365641
+    }
+  ]
+}
