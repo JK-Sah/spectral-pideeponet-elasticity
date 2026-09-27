@@ -1,0 +1,81 @@
+{
+  "protocol": {
+    "threads": 4,
+    "batch": 128,
+    "warm": 10,
+    "reps": 100,
+    "trunk": 64,
+    "weights": "trained checkpoints",
+    "inputs": "held-out test fields",
+    "statistic": "median over repetitions; across-seed spread reported"
+  },
+  "closed_form": {
+    "single_query": {
+      "median_ms": 3.140082524623722,
+      "min_ms": 3.09882708825171,
+      "iqr_ms": 0.045802793465554714
+    },
+    "batched_per_sample": {
+      "median_ms": 0.038567206956940936,
+      "min_ms": 0.03799133537540911,
+      "iqr_ms": 0.00024024029698921368
+    },
+    "n_params": 16512
+  },
+  "pi_spectral_plain": {
+    "n_params": 160640,
+    "n_seeds": 3,
+    "single_query_ms": {
+      "median": 3.247586020734161,
+      "lo": 3.240174031816423,
+      "hi": 3.2508664880879223
+    },
+    "batched_ms_per_sample": {
+      "median": 0.04281055453247973,
+      "lo": 0.04252843791618943,
+      "hi": 0.043037632622144883
+    }
+  },
+  "pi_spectral_anchored": {
+    "n_params": 177152,
+    "n_seeds": 3,
+    "single_query_ms": {
+      "median": 3.2796780578792095,
+      "lo": 3.2789839897304773,
+      "hi": 3.2867505215108395
+    },
+    "batched_ms_per_sample": {
+      "median": 0.04344560511526652,
+      "lo": 0.04331495711085154,
+      "hi": 0.043747750169131905
+    }
+  },
+  "data_only_spectral": {
+    "n_params": 160640,
+    "n_seeds": 3,
+    "single_query_ms": {
+      "median": 3.37435508845374,
+      "lo": 3.3691954449750483,
+      "hi": 3.393888531718403
+    },
+    "batched_ms_per_sample": {
+      "median": 0.1342238442703092,
+      "lo": 0.13281890642247163,
+      "hi": 0.1362911912110576
+    }
+  },
+  "fno": {
+    "n_params": 465526,
+    "n_seeds": 3,
+    "single_query_ms": {
+      "median": 16.76245656562969,
+      "lo": 13.28012952581048,
+      "hi": 22.649240505415946
+    },
+    "batched_ms_per_sample": {
+      "median": 3.552882601525198,
+      "lo": 1.6765621876402292,
+      "hi": 4.510548988037044
+    }
+  }
+}
