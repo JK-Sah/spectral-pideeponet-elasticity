@@ -1,0 +1,107 @@
+Model name:                              Intel(R) Xeon(R) Gold 6150 CPU @ 2.70GHz
+Thread(s) per core:                      1
+Socket(s):                               2
+CPU(s) scaling MHz:                      62%
+CPU max MHz:                             3700.0000
+CPU min MHz:                             1200.0000
+================ M=16 ================
+[protocol] threads=4 batch=128 warm=10 reps=100 M=16 models=13 interleaved=yes
+  closed_form                  params     1056  subnormal n/a
+  pi_spectral_plain@42         params   123680  subnormal 0.000e+00
+  pi_spectral_plain@43         params   123680  subnormal 5.529e-01
+  pi_spectral_plain@44         params   123680  subnormal 5.688e-01
+  pi_spectral_anchored@42      params   124736  subnormal 9.405e-01
+  pi_spectral_anchored@43      params   124736  subnormal 9.405e-01
+  pi_spectral_anchored@44      params   124736  subnormal 6.434e-01
+  data_only_spectral@42        params   123680  subnormal 5.940e-01
+  data_only_spectral@43        params   123680  subnormal 5.973e-01
+  data_only_spectral@44        params   123680  subnormal 5.961e-01
+  fno@42                       params   465526  subnormal 2.394e-01
+  fno@43                       params   465526  subnormal 1.987e-01
+  fno@44                       params   465526  subnormal 2.483e-02
+[as_is         ] closed_form                  single    1.494 ms  batched/sample   0.0228 ms
+[as_is         ] pi_spectral_plain@42         single    1.654 ms  batched/sample   0.0243 ms
+[as_is         ] pi_spectral_plain@43         single    1.769 ms  batched/sample   0.0953 ms
+[as_is         ] pi_spectral_plain@44         single    1.775 ms  batched/sample   0.0960 ms
+[as_is         ] pi_spectral_anchored@42      single    1.755 ms  batched/sample   0.0448 ms
+[as_is         ] pi_spectral_anchored@43      single    1.746 ms  batched/sample   0.0447 ms
+[as_is         ] pi_spectral_anchored@44      single    1.758 ms  batched/sample   0.0409 ms
+[as_is         ] data_only_spectral@42        single    1.767 ms  batched/sample   0.0978 ms
+[as_is         ] data_only_spectral@43        single    1.779 ms  batched/sample   0.0987 ms
+[as_is         ] data_only_spectral@44        single    1.770 ms  batched/sample   0.0967 ms
+[as_is         ] fno@42                       single   22.538 ms  batched/sample   4.5604 ms
+[as_is         ] fno@43                       single   21.614 ms  batched/sample   3.6192 ms
+[as_is         ] fno@44                       single   18.003 ms  batched/sample   1.7380 ms
+[flush_denormal] closed_form                  single    1.503 ms  batched/sample   0.0227 ms
+[flush_denormal] pi_spectral_plain@42         single    1.648 ms  batched/sample   0.0240 ms
+[flush_denormal] pi_spectral_plain@43         single    1.676 ms  batched/sample   0.0376 ms
+[flush_denormal] pi_spectral_plain@44         single    1.675 ms  batched/sample   0.0361 ms
+[flush_denormal] pi_spectral_anchored@42      single    1.681 ms  batched/sample   0.0280 ms
+[flush_denormal] pi_spectral_anchored@43      single    1.673 ms  batched/sample   0.0278 ms
+[flush_denormal] pi_spectral_anchored@44      single    1.690 ms  batched/sample   0.0281 ms
+[flush_denormal] data_only_spectral@42        single    1.674 ms  batched/sample   0.0331 ms
+[flush_denormal] data_only_spectral@43        single    1.666 ms  batched/sample   0.0329 ms
+[flush_denormal] data_only_spectral@44        single    1.672 ms  batched/sample   0.0326 ms
+[flush_denormal] fno@42                       single   18.402 ms  batched/sample   4.5482 ms
+[flush_denormal] fno@43                       single   18.089 ms  batched/sample   3.6114 ms
+[flush_denormal] fno@44                       single   16.984 ms  batched/sample   1.7289 ms
+
+[aggregate, as_is]
+  closed_form            single   1.494 [1.494,1.494]   batched  0.0228 [0.0228,0.0228]
+  pi_spectral_plain      single   1.769 [1.654,1.775]   batched  0.0953 [0.0243,0.0960]
+  pi_spectral_anchored   single   1.755 [1.746,1.758]   batched  0.0447 [0.0409,0.0448]
+  data_only_spectral     single   1.770 [1.767,1.779]   batched  0.0978 [0.0967,0.0987]
+  fno                    single  21.614 [18.003,22.538]   batched  3.6192 [1.7380,4.5604]
+wrote /shared/rc/whiskers/JK/cmame_pideeponet/runs/linear/timing_linear_v3_M16.json
+TIMINGLINEARV3_DONE
+================ M=64 ================
+[protocol] threads=4 batch=128 warm=10 reps=100 M=64 models=13 interleaved=yes
+  closed_form                  params    16512  subnormal n/a
+  pi_spectral_plain@42         params   160640  subnormal 0.000e+00
+  pi_spectral_plain@43         params   160640  subnormal 0.000e+00
+  pi_spectral_plain@44         params   160640  subnormal 0.000e+00
+  pi_spectral_anchored@42      params   177152  subnormal 0.000e+00
+  pi_spectral_anchored@43      params   177152  subnormal 0.000e+00
+  pi_spectral_anchored@44      params   177152  subnormal 0.000e+00
+  data_only_spectral@42        params   160640  subnormal 5.658e-01
+  data_only_spectral@43        params   160640  subnormal 5.612e-01
+  data_only_spectral@44        params   160640  subnormal 5.662e-01
+  fno@42                       params   465526  subnormal 2.394e-01
+  fno@43                       params   465526  subnormal 1.987e-01
+  fno@44                       params   465526  subnormal 2.483e-02
+[as_is         ] closed_form                  single    3.042 ms  batched/sample   0.0536 ms
+[as_is         ] pi_spectral_plain@42         single    3.154 ms  batched/sample   0.0500 ms
+[as_is         ] pi_spectral_plain@43         single    3.142 ms  batched/sample   0.0485 ms
+[as_is         ] pi_spectral_plain@44         single    3.139 ms  batched/sample   0.0482 ms
+[as_is         ] pi_spectral_anchored@42      single    3.185 ms  batched/sample   0.0486 ms
+[as_is         ] pi_spectral_anchored@43      single    3.179 ms  batched/sample   0.0486 ms
+[as_is         ] pi_spectral_anchored@44      single    3.185 ms  batched/sample   0.0485 ms
+[as_is         ] data_only_spectral@42        single    3.261 ms  batched/sample   0.1375 ms
+[as_is         ] data_only_spectral@43        single    3.267 ms  batched/sample   0.1395 ms
+[as_is         ] data_only_spectral@44        single    3.273 ms  batched/sample   0.1412 ms
+[as_is         ] fno@42                       single   17.649 ms  batched/sample   4.5131 ms
+[as_is         ] fno@43                       single   16.754 ms  batched/sample   3.5586 ms
+[as_is         ] fno@44                       single   13.286 ms  batched/sample   1.6822 ms
+[flush_denormal] closed_form                  single    3.051 ms  batched/sample   0.0535 ms
+[flush_denormal] pi_spectral_plain@42         single    3.146 ms  batched/sample   0.0500 ms
+[flush_denormal] pi_spectral_plain@43         single    3.140 ms  batched/sample   0.0484 ms
+[flush_denormal] pi_spectral_plain@44         single    3.136 ms  batched/sample   0.0479 ms
+[flush_denormal] pi_spectral_anchored@42      single    3.177 ms  batched/sample   0.0486 ms
+[flush_denormal] pi_spectral_anchored@43      single    3.174 ms  batched/sample   0.0485 ms
+[flush_denormal] pi_spectral_anchored@44      single    3.175 ms  batched/sample   0.0485 ms
+[flush_denormal] data_only_spectral@42        single    3.205 ms  batched/sample   0.0735 ms
+[flush_denormal] data_only_spectral@43        single    3.212 ms  batched/sample   0.0738 ms
+[flush_denormal] data_only_spectral@44        single    3.221 ms  batched/sample   0.0736 ms
+[flush_denormal] fno@42                       single   13.098 ms  batched/sample   4.5048 ms
+[flush_denormal] fno@43                       single   12.718 ms  batched/sample   3.5573 ms
+[flush_denormal] fno@44                       single   11.616 ms  batched/sample   1.6790 ms
+
+[aggregate, as_is]
+  closed_form            single   3.042 [3.042,3.042]   batched  0.0536 [0.0536,0.0536]
+  pi_spectral_plain      single   3.142 [3.139,3.154]   batched  0.0485 [0.0482,0.0500]
+  pi_spectral_anchored   single   3.185 [3.179,3.185]   batched  0.0486 [0.0485,0.0486]
+  data_only_spectral     single   3.267 [3.261,3.273]   batched  0.1395 [0.1375,0.1412]
+  fno                    single  16.754 [13.286,17.649]   batched  3.5586 [1.6822,4.5131]
+wrote /shared/rc/whiskers/JK/cmame_pideeponet/runs/linear/timing_linear_v3_M64.json
+TIMINGLINEARV3_DONE
+TIMINGV3_ALL_DONE
