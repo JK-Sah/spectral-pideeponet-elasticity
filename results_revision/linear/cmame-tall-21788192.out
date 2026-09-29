@@ -1,0 +1,227 @@
+### node
+skl-a-06.rc.rit.edu
+Model name:                              Intel(R) Xeon(R) Gold 6150 CPU @ 2.70GHz
+Thread(s) per core:                      1
+Socket(s):                               2
+CPU max MHz:                             3700.0000
+
+### classical baselines, both benchmarks, one protocol
+[protocol] threads=4 warm=5 reps=50
+[check] uniform-E vectorized assembly vs fixed-operator solver: rel diff 0.000e+00
+[fem  14x14 ] setup      9.6 | solve-only   0.079 | amortized   0.127 | per-query   1.875 | per-query+setup     9.07
+[fem  28x28 ] setup     38.0 | solve-only   0.401 | amortized   0.591 | per-query   7.834 | per-query+setup    37.06
+[fem  56x56 ] setup    176.1 | solve-only   1.954 | amortized   2.834 | per-query  53.752 | per-query+setup   170.41
+[fem 112x112] setup    990.0 | solve-only  12.137 | amortized  17.087 | per-query 395.132 | per-query+setup   900.85
+[rom  r=   8] online   0.0158 ms
+[rom  r=  16] online   0.0194 ms
+[rom  r=  32] online   0.0333 ms
+[rom  r=  64] online   0.0773 ms
+[rom  r= 128] online   0.1537 ms
+[offline] fem assemble+factorize     37.1 ms | rom snapshots     84.2 + svd    25.6 + project(r=32)    0.6 =    110.5 ms
+[hetero] res=29 n_test=400 keys=['f_tr', 'E_tr', 'u_tr', 'f_te', 'E_te', 'u_te']
+[hetero fem ] per-query    7.834 ms (re-assemble + re-factorize + solve)
+[hetero rom r=   8] online    1.836 ms
+[hetero rom r=  16] online    1.937 ms
+[hetero rom r=  32] online    2.381 ms
+[hetero rom r=  64] online    2.793 ms
+[hetero rom r= 128] online    4.001 ms
+[hetero rom r= 256] online    7.248 ms
+wrote /shared/rc/whiskers/JK/cmame_pideeponet/runs/linear/timing_classical_all.json
+TIMINGCLASSICALALL_DONE
+
+### learned models, M=16, all protocol conditions
+[protocol] threads=4 batch=128 warm=10 reps=100 M=16 models=13 interleaved=yes
+  closed_form                  params     1056  subnormal n/a
+  pi_spectral_plain@42         params   123680  subnormal 0.000e+00
+  pi_spectral_plain@43         params   123680  subnormal 5.529e-01
+  pi_spectral_plain@44         params   123680  subnormal 5.688e-01
+  pi_spectral_anchored@42      params   124736  subnormal 9.405e-01
+  pi_spectral_anchored@43      params   124736  subnormal 9.405e-01
+  pi_spectral_anchored@44      params   124736  subnormal 6.434e-01
+  data_only_spectral@42        params   123680  subnormal 5.940e-01
+  data_only_spectral@43        params   123680  subnormal 5.973e-01
+  data_only_spectral@44        params   123680  subnormal 5.961e-01
+  fno@42                       params   465526  subnormal 2.394e-01
+  fno@43                       params   465526  subnormal 1.987e-01
+  fno@44                       params   465526  subnormal 2.483e-02
+[blocked/as_is             ] closed_form                  single    1.003 ms  batched/sample   0.0123 ms
+[blocked/as_is             ] pi_spectral_plain@42         single    1.134 ms  batched/sample   0.0162 ms
+[blocked/as_is             ] pi_spectral_plain@43         single    1.256 ms  batched/sample   0.0903 ms
+[blocked/as_is             ] pi_spectral_plain@44         single    1.256 ms  batched/sample   0.0915 ms
+[blocked/as_is             ] pi_spectral_anchored@42      single    1.215 ms  batched/sample   0.0401 ms
+[blocked/as_is             ] pi_spectral_anchored@43      single    1.213 ms  batched/sample   0.0401 ms
+[blocked/as_is             ] pi_spectral_anchored@44      single    1.226 ms  batched/sample   0.0364 ms
+[blocked/as_is             ] data_only_spectral@42        single    1.250 ms  batched/sample   0.0935 ms
+[blocked/as_is             ] data_only_spectral@43        single    1.253 ms  batched/sample   0.0943 ms
+[blocked/as_is             ] data_only_spectral@44        single    1.246 ms  batched/sample   0.0926 ms
+[blocked/as_is             ] fno@42                       single   17.462 ms  batched/sample   4.5093 ms
+[blocked/as_is             ] fno@43                       single   16.532 ms  batched/sample   3.5709 ms
+[blocked/as_is             ] fno@44                       single   12.960 ms  batched/sample   1.6894 ms
+[blocked/flush_denormal    ] closed_form                  single    1.023 ms  batched/sample   0.0136 ms
+[blocked/flush_denormal    ] pi_spectral_plain@42         single    1.150 ms  batched/sample   0.0181 ms
+[blocked/flush_denormal    ] pi_spectral_plain@43         single    1.176 ms  batched/sample   0.0332 ms
+[blocked/flush_denormal    ] pi_spectral_plain@44         single    1.180 ms  batched/sample   0.0320 ms
+[blocked/flush_denormal    ] pi_spectral_anchored@42      single    1.176 ms  batched/sample   0.0238 ms
+[blocked/flush_denormal    ] pi_spectral_anchored@43      single    1.178 ms  batched/sample   0.0238 ms
+[blocked/flush_denormal    ] pi_spectral_anchored@44      single    1.192 ms  batched/sample   0.0242 ms
+[blocked/flush_denormal    ] data_only_spectral@42        single    1.181 ms  batched/sample   0.0293 ms
+[blocked/flush_denormal    ] data_only_spectral@43        single    1.178 ms  batched/sample   0.0289 ms
+[blocked/flush_denormal    ] data_only_spectral@44        single    1.180 ms  batched/sample   0.0289 ms
+[blocked/flush_denormal    ] fno@42                       single   12.996 ms  batched/sample   4.5133 ms
+[blocked/flush_denormal    ] fno@43                       single   12.660 ms  batched/sample   3.5649 ms
+[blocked/flush_denormal    ] fno@44                       single   11.560 ms  batched/sample   1.6822 ms
+[interleaved/as_is         ] closed_form                  single    1.071 ms  batched/sample   0.0196 ms
+[interleaved/as_is         ] pi_spectral_plain@42         single    1.174 ms  batched/sample   0.0204 ms
+[interleaved/as_is         ] pi_spectral_plain@43         single    1.279 ms  batched/sample   0.0915 ms
+[interleaved/as_is         ] pi_spectral_plain@44         single    1.301 ms  batched/sample   0.0922 ms
+[interleaved/as_is         ] pi_spectral_anchored@42      single    1.270 ms  batched/sample   0.0407 ms
+[interleaved/as_is         ] pi_spectral_anchored@43      single    1.263 ms  batched/sample   0.0405 ms
+[interleaved/as_is         ] pi_spectral_anchored@44      single    1.273 ms  batched/sample   0.0368 ms
+[interleaved/as_is         ] data_only_spectral@42        single    1.299 ms  batched/sample   0.0938 ms
+[interleaved/as_is         ] data_only_spectral@43        single    1.302 ms  batched/sample   0.0947 ms
+[interleaved/as_is         ] data_only_spectral@44        single    1.295 ms  batched/sample   0.0928 ms
+[interleaved/as_is         ] fno@42                       single   17.619 ms  batched/sample   4.5168 ms
+[interleaved/as_is         ] fno@43                       single   16.668 ms  batched/sample   3.5654 ms
+[interleaved/as_is         ] fno@44                       single   13.177 ms  batched/sample   1.6903 ms
+[interleaved/flush_denormal] closed_form                  single    1.072 ms  batched/sample   0.0196 ms
+[interleaved/flush_denormal] pi_spectral_plain@42         single    1.175 ms  batched/sample   0.0203 ms
+[interleaved/flush_denormal] pi_spectral_plain@43         single    1.194 ms  batched/sample   0.0341 ms
+[interleaved/flush_denormal] pi_spectral_plain@44         single    1.194 ms  batched/sample   0.0325 ms
+[interleaved/flush_denormal] pi_spectral_anchored@42      single    1.187 ms  batched/sample   0.0243 ms
+[interleaved/flush_denormal] pi_spectral_anchored@43      single    1.189 ms  batched/sample   0.0241 ms
+[interleaved/flush_denormal] pi_spectral_anchored@44      single    1.199 ms  batched/sample   0.0244 ms
+[interleaved/flush_denormal] data_only_spectral@42        single    1.195 ms  batched/sample   0.0295 ms
+[interleaved/flush_denormal] data_only_spectral@43        single    1.190 ms  batched/sample   0.0291 ms
+[interleaved/flush_denormal] data_only_spectral@44        single    1.191 ms  batched/sample   0.0290 ms
+[interleaved/flush_denormal] fno@42                       single   13.096 ms  batched/sample   4.5076 ms
+[interleaved/flush_denormal] fno@43                       single   12.711 ms  batched/sample   3.5601 ms
+[interleaved/flush_denormal] fno@44                       single   11.602 ms  batched/sample   1.6832 ms
+
+[aggregate, blocked/as_is]
+  closed_form            single   1.003 [1.003,1.003]   batched  0.0123 [0.0123,0.0123]
+  pi_spectral_plain      single   1.256 [1.134,1.256]   batched  0.0903 [0.0162,0.0915]
+  pi_spectral_anchored   single   1.215 [1.213,1.226]   batched  0.0401 [0.0364,0.0401]
+  data_only_spectral     single   1.250 [1.246,1.253]   batched  0.0935 [0.0926,0.0943]
+  fno                    single  16.532 [12.960,17.462]   batched  3.5709 [1.6894,4.5093]
+
+[aggregate, blocked/flush_denormal]
+  closed_form            single   1.023 [1.023,1.023]   batched  0.0136 [0.0136,0.0136]
+  pi_spectral_plain      single   1.176 [1.150,1.180]   batched  0.0320 [0.0181,0.0332]
+  pi_spectral_anchored   single   1.178 [1.176,1.192]   batched  0.0238 [0.0238,0.0242]
+  data_only_spectral     single   1.180 [1.178,1.181]   batched  0.0289 [0.0289,0.0293]
+  fno                    single  12.660 [11.560,12.996]   batched  3.5649 [1.6822,4.5133]
+
+[aggregate, interleaved/as_is]
+  closed_form            single   1.071 [1.071,1.071]   batched  0.0196 [0.0196,0.0196]
+  pi_spectral_plain      single   1.279 [1.174,1.301]   batched  0.0915 [0.0204,0.0922]
+  pi_spectral_anchored   single   1.270 [1.263,1.273]   batched  0.0405 [0.0368,0.0407]
+  data_only_spectral     single   1.299 [1.295,1.302]   batched  0.0938 [0.0928,0.0947]
+  fno                    single  16.668 [13.177,17.619]   batched  3.5654 [1.6903,4.5168]
+
+[aggregate, interleaved/flush_denormal]
+  closed_form            single   1.072 [1.072,1.072]   batched  0.0196 [0.0196,0.0196]
+  pi_spectral_plain      single   1.194 [1.175,1.194]   batched  0.0325 [0.0203,0.0341]
+  pi_spectral_anchored   single   1.189 [1.187,1.199]   batched  0.0243 [0.0241,0.0244]
+  data_only_spectral     single   1.191 [1.190,1.195]   batched  0.0291 [0.0290,0.0295]
+  fno                    single  12.711 [11.602,13.096]   batched  3.5601 [1.6832,4.5076]
+wrote /shared/rc/whiskers/JK/cmame_pideeponet/runs/linear/timing_linear_v3_M16.json
+TIMINGLINEARV3_DONE
+
+### learned models, M=64, all protocol conditions
+[protocol] threads=4 batch=128 warm=10 reps=100 M=64 models=13 interleaved=yes
+  closed_form                  params    16512  subnormal n/a
+  pi_spectral_plain@42         params   160640  subnormal 0.000e+00
+  pi_spectral_plain@43         params   160640  subnormal 0.000e+00
+  pi_spectral_plain@44         params   160640  subnormal 0.000e+00
+  pi_spectral_anchored@42      params   177152  subnormal 0.000e+00
+  pi_spectral_anchored@43      params   177152  subnormal 0.000e+00
+  pi_spectral_anchored@44      params   177152  subnormal 0.000e+00
+  data_only_spectral@42        params   160640  subnormal 5.658e-01
+  data_only_spectral@43        params   160640  subnormal 5.612e-01
+  data_only_spectral@44        params   160640  subnormal 5.662e-01
+  fno@42                       params   465526  subnormal 2.394e-01
+  fno@43                       params   465526  subnormal 1.987e-01
+  fno@44                       params   465526  subnormal 2.483e-02
+[blocked/as_is             ] closed_form                  single    2.996 ms  batched/sample   0.0412 ms
+[blocked/as_is             ] pi_spectral_plain@42         single    3.103 ms  batched/sample   0.0458 ms
+[blocked/as_is             ] pi_spectral_plain@43         single    3.089 ms  batched/sample   0.0439 ms
+[blocked/as_is             ] pi_spectral_plain@44         single    3.110 ms  batched/sample   0.0439 ms
+[blocked/as_is             ] pi_spectral_anchored@42      single    3.129 ms  batched/sample   0.0447 ms
+[blocked/as_is             ] pi_spectral_anchored@43      single    3.144 ms  batched/sample   0.0447 ms
+[blocked/as_is             ] pi_spectral_anchored@44      single    3.135 ms  batched/sample   0.0446 ms
+[blocked/as_is             ] data_only_spectral@42        single    3.227 ms  batched/sample   0.1335 ms
+[blocked/as_is             ] data_only_spectral@43        single    3.222 ms  batched/sample   0.1357 ms
+[blocked/as_is             ] data_only_spectral@44        single    3.239 ms  batched/sample   0.1377 ms
+[blocked/as_is             ] fno@42                       single   17.575 ms  batched/sample   4.4940 ms
+[blocked/as_is             ] fno@43                       single   16.617 ms  batched/sample   3.5525 ms
+[blocked/as_is             ] fno@44                       single   13.110 ms  batched/sample   1.6759 ms
+[blocked/flush_denormal    ] closed_form                  single    3.023 ms  batched/sample   0.0408 ms
+[blocked/flush_denormal    ] pi_spectral_plain@42         single    3.136 ms  batched/sample   0.0453 ms
+[blocked/flush_denormal    ] pi_spectral_plain@43         single    3.131 ms  batched/sample   0.0454 ms
+[blocked/flush_denormal    ] pi_spectral_plain@44         single    3.156 ms  batched/sample   0.0453 ms
+[blocked/flush_denormal    ] pi_spectral_anchored@42      single    3.174 ms  batched/sample   0.0461 ms
+[blocked/flush_denormal    ] pi_spectral_anchored@43      single    3.182 ms  batched/sample   0.0460 ms
+[blocked/flush_denormal    ] pi_spectral_anchored@44      single    3.166 ms  batched/sample   0.0459 ms
+[blocked/flush_denormal    ] data_only_spectral@42        single    3.218 ms  batched/sample   0.0712 ms
+[blocked/flush_denormal    ] data_only_spectral@43        single    3.208 ms  batched/sample   0.0715 ms
+[blocked/flush_denormal    ] data_only_spectral@44        single    3.215 ms  batched/sample   0.0713 ms
+[blocked/flush_denormal    ] fno@42                       single   13.071 ms  batched/sample   4.4908 ms
+[blocked/flush_denormal    ] fno@43                       single   12.698 ms  batched/sample   3.5524 ms
+[blocked/flush_denormal    ] fno@44                       single   11.580 ms  batched/sample   1.6721 ms
+[interleaved/as_is         ] closed_form                  single    3.064 ms  batched/sample   0.0537 ms
+[interleaved/as_is         ] pi_spectral_plain@42         single    3.175 ms  batched/sample   0.0484 ms
+[interleaved/as_is         ] pi_spectral_plain@43         single    3.162 ms  batched/sample   0.0462 ms
+[interleaved/as_is         ] pi_spectral_plain@44         single    3.160 ms  batched/sample   0.0457 ms
+[interleaved/as_is         ] pi_spectral_anchored@42      single    3.194 ms  batched/sample   0.0464 ms
+[interleaved/as_is         ] pi_spectral_anchored@43      single    3.187 ms  batched/sample   0.0464 ms
+[interleaved/as_is         ] pi_spectral_anchored@44      single    3.181 ms  batched/sample   0.0463 ms
+[interleaved/as_is         ] data_only_spectral@42        single    3.270 ms  batched/sample   0.1352 ms
+[interleaved/as_is         ] data_only_spectral@43        single    3.271 ms  batched/sample   0.1373 ms
+[interleaved/as_is         ] data_only_spectral@44        single    3.274 ms  batched/sample   0.1390 ms
+[interleaved/as_is         ] fno@42                       single   17.678 ms  batched/sample   4.4894 ms
+[interleaved/as_is         ] fno@43                       single   16.721 ms  batched/sample   3.5521 ms
+[interleaved/as_is         ] fno@44                       single   13.293 ms  batched/sample   1.6750 ms
+[interleaved/flush_denormal] closed_form                  single    3.063 ms  batched/sample   0.0538 ms
+[interleaved/flush_denormal] pi_spectral_plain@42         single    3.172 ms  batched/sample   0.0483 ms
+[interleaved/flush_denormal] pi_spectral_plain@43         single    3.159 ms  batched/sample   0.0463 ms
+[interleaved/flush_denormal] pi_spectral_plain@44         single    3.156 ms  batched/sample   0.0459 ms
+[interleaved/flush_denormal] pi_spectral_anchored@42      single    3.194 ms  batched/sample   0.0464 ms
+[interleaved/flush_denormal] pi_spectral_anchored@43      single    3.184 ms  batched/sample   0.0463 ms
+[interleaved/flush_denormal] pi_spectral_anchored@44      single    3.188 ms  batched/sample   0.0464 ms
+[interleaved/flush_denormal] data_only_spectral@42        single    3.226 ms  batched/sample   0.0714 ms
+[interleaved/flush_denormal] data_only_spectral@43        single    3.225 ms  batched/sample   0.0717 ms
+[interleaved/flush_denormal] data_only_spectral@44        single    3.224 ms  batched/sample   0.0715 ms
+[interleaved/flush_denormal] fno@42                       single   13.110 ms  batched/sample   4.4828 ms
+[interleaved/flush_denormal] fno@43                       single   12.736 ms  batched/sample   3.5488 ms
+[interleaved/flush_denormal] fno@44                       single   11.624 ms  batched/sample   1.6695 ms
+
+[aggregate, blocked/as_is]
+  closed_form            single   2.996 [2.996,2.996]   batched  0.0412 [0.0412,0.0412]
+  pi_spectral_plain      single   3.103 [3.089,3.110]   batched  0.0439 [0.0439,0.0458]
+  pi_spectral_anchored   single   3.135 [3.129,3.144]   batched  0.0447 [0.0446,0.0447]
+  data_only_spectral     single   3.227 [3.222,3.239]   batched  0.1357 [0.1335,0.1377]
+  fno                    single  16.617 [13.110,17.575]   batched  3.5525 [1.6759,4.4940]
+
+[aggregate, blocked/flush_denormal]
+  closed_form            single   3.023 [3.023,3.023]   batched  0.0408 [0.0408,0.0408]
+  pi_spectral_plain      single   3.136 [3.131,3.156]   batched  0.0453 [0.0453,0.0454]
+  pi_spectral_anchored   single   3.174 [3.166,3.182]   batched  0.0460 [0.0459,0.0461]
+  data_only_spectral     single   3.215 [3.208,3.218]   batched  0.0713 [0.0712,0.0715]
+  fno                    single  12.698 [11.580,13.071]   batched  3.5524 [1.6721,4.4908]
+
+[aggregate, interleaved/as_is]
+  closed_form            single   3.064 [3.064,3.064]   batched  0.0537 [0.0537,0.0537]
+  pi_spectral_plain      single   3.162 [3.160,3.175]   batched  0.0462 [0.0457,0.0484]
+  pi_spectral_anchored   single   3.187 [3.181,3.194]   batched  0.0464 [0.0463,0.0464]
+  data_only_spectral     single   3.271 [3.270,3.274]   batched  0.1373 [0.1352,0.1390]
+  fno                    single  16.721 [13.293,17.678]   batched  3.5521 [1.6750,4.4894]
+
+[aggregate, interleaved/flush_denormal]
+  closed_form            single   3.063 [3.063,3.063]   batched  0.0538 [0.0538,0.0538]
+  pi_spectral_plain      single   3.159 [3.156,3.172]   batched  0.0463 [0.0459,0.0483]
+  pi_spectral_anchored   single   3.188 [3.184,3.194]   batched  0.0464 [0.0463,0.0464]
+  data_only_spectral     single   3.225 [3.224,3.226]   batched  0.0715 [0.0714,0.0717]
+  fno                    single  12.736 [11.624,13.110]   batched  3.5488 [1.6695,4.4828]
+wrote /shared/rc/whiskers/JK/cmame_pideeponet/runs/linear/timing_linear_v3_M64.json
+TIMINGLINEARV3_DONE
+TIMINGALL_DONE
