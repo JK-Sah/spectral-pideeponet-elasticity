@@ -166,6 +166,41 @@ def main():
         print(f"[rom  r={r:4d}] online {online['median_ms']:8.4f} ms")
     out["rom"] = rom_rows
 
+    # ---- offline cost of each classical construction -------------------
+    # The break-even column divides these by the per-query saving, so they have
+    # to come from the same protocol as the per-query numbers rather than from
+    # whichever script happened to print a setup time.
+    res = 29
+    n_snap = min(200, a.n_test)
+    t0 = time.perf_counter()
+    soln_o = FemSolver(res, lam, mu)
+    fem_offline_ms = (time.perf_counter() - t0) * 1e3
+
+    t0 = time.perf_counter()
+    snaps_o = np.array([soln_o.solve(f_te[i])[0].reshape(-1)[free]
+                        for i in range(n_snap)])
+    snap_ms = (time.perf_counter() - t0) * 1e3
+    t0 = time.perf_counter()
+    Uo, _, _ = np.linalg.svd(snaps_o.T, full_matrices=False)
+    svd_ms = (time.perf_counter() - t0) * 1e3
+
+    t0 = time.perf_counter()
+    Vo = Uo[:, :32]
+    _ = lu_factor(Vo.T @ (K_free @ Vo))
+    proj_ms = (time.perf_counter() - t0) * 1e3
+
+    out["offline"] = dict(
+        n_snapshots=n_snap,
+        fem_assemble_factorize_ms=fem_offline_ms,
+        rom_snapshot_ms=snap_ms, rom_svd_ms=svd_ms,
+        rom_projection_r32_ms=proj_ms,
+        rom_total_ms=snap_ms + svd_ms + proj_ms,
+        note="the reduced model is charged for generating its own snapshots, "
+             "which on this manufactured family is the dominant offline term")
+    print(f"[offline] fem assemble+factorize {fem_offline_ms:8.1f} ms | "
+          f"rom snapshots {snap_ms:8.1f} + svd {svd_ms:7.1f} + project(r=32) "
+          f"{proj_ms:6.1f} = {snap_ms + svd_ms + proj_ms:8.1f} ms")
+
     # ---- heterogeneous benchmark: operator changes per query -----------
     hp = Path(a.het_data)
     if not hp.exists():
