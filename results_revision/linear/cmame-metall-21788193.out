@@ -1,0 +1,65 @@
+================ M=16 ================
+[setup] device=cpu trunk=16 n_test=200
+[closed_form         ] disp 0.000000  strain 0.000001  stress 0.000001  energy 0.000000  pde 1.844713e-04  bnd 8.925e-09
+[pi_spectral_plain   ] seed 42  disp 0.092373  strain 0.120481  stress 0.094643  energy 0.093531  pde 1.054068e-02  bnd 8.264e-09
+[pi_spectral_plain   ] seed 43  disp 0.085252  strain 0.111974  stress 0.088676  energy 0.063466  pde 1.030996e-02  bnd 8.567e-09
+[pi_spectral_plain   ] seed 44  disp 0.084486  strain 0.114106  stress 0.096656  energy 0.061514  pde 1.120412e-02  bnd 8.543e-09
+[pi_spectral_anchored] seed 42  disp 0.007565  strain 0.014155  stress 0.015979  energy 0.010387  pde 3.031950e-04  bnd 8.954e-09
+[pi_spectral_anchored] seed 43  disp 0.018737  strain 0.035934  stress 0.040888  energy 0.013069  pde 2.721598e-03  bnd 8.966e-09
+[pi_spectral_anchored] seed 44  disp 0.022878  strain 0.038785  stress 0.043836  energy 0.013231  pde 2.521252e-03  bnd 8.983e-09
+[data_only_spectral  ] seed 42  disp 0.227281  strain 0.392598  stress 0.364487  energy 0.252286  pde 1.974679e-01  bnd 8.022e-09
+[data_only_spectral  ] seed 43  disp 0.231380  strain 0.399560  stress 0.372778  energy 0.242158  pde 2.050253e-01  bnd 8.270e-09
+[data_only_spectral  ] seed 44  disp 0.228615  strain 0.395872  stress 0.369258  energy 0.240230  pde 2.027702e-01  bnd 7.973e-09
+[fno                 ] seed 42  disp 0.103984  strain 0.119102  stress 0.091799  energy 0.029649  pde 6.631544e-03  bnd 8.955e-03
+[fno                 ] seed 43  disp 0.108941  strain 0.117844  stress 0.091961  energy 0.031710  pde 6.712873e-03  bnd 9.738e-03
+[fno                 ] seed 44  disp 0.120705  strain 0.129744  stress 0.101191  energy 0.040278  pde 6.843171e-03  bnd 9.963e-03
+
+[summary: mean +/- std over seeds]
+model                                disp             strain             stress             energy        pde_mse
+pi_spectral_plain       0.087370+-0.003551  0.115520+-0.003614  0.093325+-0.003389  0.072837+-0.014655   1.068492e-02
+pi_spectral_anchored    0.016393+-0.006468  0.029625+-0.011001  0.033568+-0.012495  0.012229+-0.001304   1.848681e-03
+data_only_spectral      0.229092+-0.001707  0.396010+-0.002844  0.368841+-0.003397  0.244891+-0.005287   2.017545e-01
+fno                     0.111210+-0.007012  0.122230+-0.005338  0.094984+-0.004390  0.033879+-0.004603   6.729196e-03
+
+[physics-informed vs data-only, mean over seeds]
+  disp_l2      0.229092 -> 0.087370  (-61.9%)
+  strain_l2    0.396010 -> 0.115520  (-70.8%)
+  stress_l2    0.368841 -> 0.093325  (-74.7%)
+  energy_err   0.244891 -> 0.072837  (-70.3%)
+  pde_mse      0.201754 -> 0.010685  (-94.7%)
+
+wrote /shared/rc/whiskers/JK/cmame_pideeponet/runs/linear/canonical_metrics_all_M16.json
+CANONICALMETRICSALL_DONE
+================ M=64 ================
+[setup] device=cpu trunk=64 n_test=200
+[closed_form         ] disp 0.000001  strain 0.000002  stress 0.000002  energy 0.000000  pde 1.844712e-04  bnd 8.925e-09
+[pi_spectral_plain   ] seed 42  disp 0.132956  strain 0.174886  stress 0.127510  energy 0.104122  pde 2.675514e-02  bnd 8.257e-09
+[pi_spectral_plain   ] seed 43  disp 0.151988  strain 0.207780  stress 0.139783  energy 0.100638  pde 2.682885e-02  bnd 7.798e-09
+[pi_spectral_plain   ] seed 44  disp 0.147772  strain 0.194145  stress 0.131681  energy 0.098226  pde 2.281267e-02  bnd 8.293e-09
+[pi_spectral_anchored] seed 42  disp 0.004024  strain 0.008491  stress 0.009459  energy 0.010123  pde 2.031409e-05  bnd 8.941e-09
+[pi_spectral_anchored] seed 43  disp 0.004885  strain 0.010984  stress 0.012257  energy 0.010223  pde 2.600314e-04  bnd 8.941e-09
+[pi_spectral_anchored] seed 44  disp 0.004042  strain 0.008572  stress 0.009549  energy 0.010109  pde 3.008848e-05  bnd 8.940e-09
+[data_only_spectral  ] seed 42  disp 0.229726  strain 0.397828  stress 0.370697  energy 0.241454  pde 2.053361e-01  bnd 8.034e-09
+[data_only_spectral  ] seed 43  disp 0.228474  strain 0.397008  stress 0.371321  energy 0.244858  pde 2.066249e-01  bnd 8.709e-09
+[data_only_spectral  ] seed 44  disp 0.230427  strain 0.400182  stress 0.373803  energy 0.246392  pde 2.109103e-01  bnd 8.165e-09
+[fno                 ] seed 42  disp 0.103984  strain 0.119102  stress 0.091799  energy 0.029649  pde 6.631544e-03  bnd 8.955e-03
+[fno                 ] seed 43  disp 0.108941  strain 0.117844  stress 0.091961  energy 0.031710  pde 6.712873e-03  bnd 9.738e-03
+[fno                 ] seed 44  disp 0.120705  strain 0.129744  stress 0.101191  energy 0.040278  pde 6.843171e-03  bnd 9.963e-03
+
+[summary: mean +/- std over seeds]
+model                                disp             strain             stress             energy        pde_mse
+pi_spectral_plain       0.144239+-0.008162  0.192271+-0.013494  0.132991+-0.005095  0.100995+-0.002420   2.546555e-02
+pi_spectral_anchored    0.004317+-0.000402  0.009349+-0.001156  0.010422+-0.001298  0.010152+-0.000051   1.034780e-04
+data_only_spectral      0.229542+-0.000808  0.398339+-0.001345  0.371940+-0.001342  0.244234+-0.002064   2.076238e-01
+fno                     0.111210+-0.007012  0.122230+-0.005338  0.094984+-0.004390  0.033879+-0.004603   6.729196e-03
+
+[physics-informed vs data-only, mean over seeds]
+  disp_l2      0.229542 -> 0.144239  (-37.2%)
+  strain_l2    0.398339 -> 0.192271  (-51.7%)
+  stress_l2    0.371940 -> 0.132991  (-64.2%)
+  energy_err   0.244234 -> 0.100995  (-58.6%)
+  pde_mse      0.207624 -> 0.025466  (-87.7%)
+
+wrote /shared/rc/whiskers/JK/cmame_pideeponet/runs/linear/canonical_metrics_all_M64.json
+CANONICALMETRICSALL_DONE
+METRICSALL_DONE
