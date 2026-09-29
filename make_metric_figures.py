@@ -69,14 +69,12 @@ fig, ax = plt.subplots(figsize=(8.6, 4.4))
 bars(ax, "Canonical configuration, $M{=}16$: mean $\\pm$ s.d. over three seeds")
 plt.tight_layout()
 fig.savefig(OUT / "Figure_2_main_quantitative_comparison.pdf", bbox_inches="tight")
-fig.savefig(OUT / "Fig3.eps", format="eps", bbox_inches="tight")
 plt.close()
 
 fig, ax = plt.subplots(figsize=(10.4, 4.8))
 bars(ax, "Extended comparison: spectral branches and the Fourier neural operator")
 plt.tight_layout()
 fig.savefig(OUT / "Figure_7_fno_comparison.pdf", bbox_inches="tight")
-fig.savefig(OUT / "Fig8.eps", format="eps", bbox_inches="tight")
 plt.close()
 
 print("values plotted (mean +/- s.d. over seeds 42/43/44):")
@@ -92,5 +90,12 @@ for i, (k, lab) in enumerate(METRICS):
     sep = abs(a - b) / max(sa + sb, 1e-30)
     print(f"  {lab:14s} PI {a:.5f}  FNO {b:.5f}   gap = {sep:5.2f} x combined s.d."
           f"{'   (overlapping)' if sep < 1 else ''}")
-print("\nwrote Figure_2_main_quantitative_comparison.pdf + Fig3.eps, "
-      "Figure_7_fno_comparison.pdf + Fig8.eps")
+print("\nwrote Figure_2_main_quantitative_comparison.pdf and "
+      "Figure_7_fno_comparison.pdf")
+print("journal EPS: convert with pdftops -eps, as the rest of the set was, "
+      "rather than matplotlib's own EPS writer -- the two differ in fidelity "
+      "and the set should be made one way:")
+print("  pdftops -eps ../CompMech_submission_ready/"
+      "Figure_2_main_quantitative_comparison.pdf ../journal_figures/Fig3.eps")
+print("  pdftops -eps ../CompMech_submission_ready/"
+      "Figure_7_fno_comparison.pdf ../journal_figures/Fig8.eps")

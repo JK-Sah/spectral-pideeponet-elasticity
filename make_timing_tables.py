@@ -189,11 +189,30 @@ def main():
 
     if a.check and TEX.exists():
         tex = TEX.read_text()
-        missing = [e for e in sorted(set(emitted)) if e not in tex]
-        print(f"\n[check] {len(emitted) - len(missing)}/{len(set(emitted))} emitted "
-              f"values already present in the .tex")
+
+        def present(v):
+            """A value counts as present at any sensible rounding of itself.
+
+            The tables quote 12.66 where the measurement is 12.660, so an exact
+            string match would report false misses and hide the real ones.
+            """
+            x = float(v)
+            for dp in range(5, -1, -1):
+                t = f"{x:.{dp}f}"
+                if t in tex:
+                    return True
+                if t.rstrip("0").rstrip(".") in tex:
+                    return True
+            return False
+
+        uniq = sorted(set(emitted), key=float)
+        missing = [v for v in uniq if not present(v)]
+        print(f"\n[check] {len(uniq) - len(missing)}/{len(uniq)} emitted values "
+              f"appear in the manuscript at some rounding")
         if missing:
-            print("[check] not yet in the .tex:", ", ".join(missing))
+            print("[check] NOT in the manuscript:", ", ".join(missing))
+        else:
+            print("[check] every generated value is in the manuscript")
 
 
 if __name__ == "__main__":
