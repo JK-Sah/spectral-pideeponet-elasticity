@@ -1,0 +1,100 @@
+{
+  "config": {
+    "data": "/shared/rc/whiskers/JK/cmame_pideeponet/data/hetero_field.npz",
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "modes": 16,
+    "cos_modes": 16,
+    "hidden": 192,
+    "depth": 4,
+    "epochs": 800,
+    "batch": 32,
+    "lr": 0.001,
+    "w_pde": 0.0001,
+    "eval_every": 20,
+    "val_frac": 0.2,
+    "res": 29,
+    "nu": 0.3,
+    "device": "auto",
+    "out": "/shared/rc/whiskers/JK/cmame_pideeponet/runs/hetero/anchored.json"
+  },
+  "runs": [
+    {
+      "model": "plain",
+      "seed": 42,
+      "val_error": 0.39003998041152954,
+      "selected_epoch": 800,
+      "test_error": 0.3948342800140381,
+      "n_params": 126752,
+      "minutes": 5.1018332997957865
+    },
+    {
+      "model": "anchored",
+      "seed": 42,
+      "val_error": 0.5895322561264038,
+      "selected_epoch": 420,
+      "test_error": 0.5891358852386475,
+      "n_params": 128320,
+      "minutes": 4.865985075632731
+    },
+    {
+      "model": "plain",
+      "seed": 43,
+      "val_error": 0.3894197344779968,
+      "selected_epoch": 800,
+      "test_error": 0.39288219809532166,
+      "n_params": 126752,
+      "minutes": 4.784447765350341
+    },
+    {
+      "model": "anchored",
+      "seed": 43,
+      "val_error": 0.5883529782295227,
+      "selected_epoch": 420,
+      "test_error": 0.5926687717437744,
+      "n_params": 128320,
+      "minutes": 4.852919427553813
+    },
+    {
+      "model": "plain",
+      "seed": 44,
+      "val_error": 0.3882911801338196,
+      "selected_epoch": 800,
+      "test_error": 0.392363578081131,
+      "n_params": 126752,
+      "minutes": 4.768613600730896
+    },
+    {
+      "model": "anchored",
+      "seed": 44,
+      "val_error": 0.5934343934059143,
+      "selected_epoch": 420,
+      "test_error": 0.5922788381576538,
+      "n_params": 128320,
+      "minutes": 4.845422013600667
+    }
+  ],
+  "aggregate": {
+    "plain": {
+      "mean": 0.3933600187301636,
+      "std": 0.001063743838095205,
+      "values": [
+        0.3948342800140381,
+        0.39288219809532166,
+        0.392363578081131
+      ]
+    },
+    "anchored": {
+      "mean": 0.5913611650466919,
+      "std": 0.0015815424366661642,
+      "values": [
+        0.5891358852386475,
+        0.5926687717437744,
+        0.5922788381576538
+      ]
+    }
+  }
+}
