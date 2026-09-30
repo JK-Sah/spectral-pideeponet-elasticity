@@ -34,6 +34,24 @@ from pathlib import Path
 import numpy as np
 
 
+def subnormal_fraction(model):
+    """Fraction of parameter entries that are subnormal but not zero.
+
+    Training under weight decay drives many weights below the smallest normal
+    float32, and on this hardware arithmetic touching them takes a slow path.
+    Denormals are flushed for every measurement here, but the fraction is
+    recorded so that a cost difference between architecturally identical models
+    can be checked against it rather than guessed at.
+    """
+    tiny = float(np.finfo(np.float32).tiny)
+    n_sub = n_tot = 0
+    for prm in model.parameters():
+        a = prm.detach().abs()
+        n_sub += int(((a > 0) & (a < tiny)).sum())
+        n_tot += a.numel()
+    return n_sub / max(n_tot, 1)
+
+
 def timed(fn, warm, reps):
     for _ in range(warm):
         fn()
@@ -138,13 +156,24 @@ def main():
             s = timed(lambda: m(f_t[:1], E_t[:1]), a.warm, a.reps)
             b = timed(lambda: m(f_t[:nb], E_t[:nb]), a.warm, a.reps)
         err = blob.get("final", {}).get("rel_l2_u")
-        neural[margs.model] = dict(single_query_ms=s["median_ms"],
-                                   batched_ms_per_sample=b["median_ms"] / nb,
-                                   n_params=int(npar), rel_l2_u=err,
-                                   checkpoint=ck.name)
-        print(f"[{margs.model:10s}] single {s['median_ms']:8.3f} ms  "
+        # Key by checkpoint, not by model name: a run directory may hold both
+        # the physics-informed and the data-only variant of one architecture,
+        # and keying by model silently kept whichever was globbed last.  Their
+        # cost is the same -- identical architecture and parameter count, and
+        # denormals are flushed -- but their accuracy is not, and pairing one
+        # variant's error with the other's timing is the kind of mismatch this
+        # script exists to remove.
+        neural[ck.stem] = dict(model=margs.model,
+                               subnormal_fraction=subnormal_fraction(m),
+                               w_pde=getattr(margs, "w_pde", None),
+                               single_query_ms=s["median_ms"],
+                               batched_ms_per_sample=b["median_ms"] / nb,
+                               n_params=int(npar), rel_l2_u=err,
+                               checkpoint=ck.name)
+        print(f"[{ck.stem:34s}] single {s['median_ms']:8.3f} ms  "
               f"batched/sample {b['median_ms']/nb:8.4f} ms  "
-              f"params {npar}  err {err}")
+              f"params {npar}  subnormal {neural[ck.stem]['subnormal_fraction']:.3e}  "
+              f"err {err}")
     out["neural"] = neural
 
     # ---- what the crossover argument actually needs ------------------------
@@ -154,7 +183,7 @@ def main():
         print(f"  ROM r={r['rank']:4d}  {r['online_ms']:8.3f} ms  "
               f"= {r['online_ms']/fem['median_ms']:5.2f} x FEM")
     for k, v in neural.items():
-        print(f"  {k:10s}    {v['single_query_ms']:8.3f} ms  "
+        print(f"  {k:34s} {v['single_query_ms']:8.3f} ms  "
               f"= {v['single_query_ms']/fem['median_ms']:5.2f} x FEM"
               + (f"   err {v['rel_l2_u']:.4f}" if v.get("rel_l2_u") else ""))
 

@@ -1,0 +1,61 @@
+{
+  "protocol": {
+    "threads": 4,
+    "warm": 5,
+    "reps": 50,
+    "batch": 128,
+    "flush_denormal": true,
+    "res": 29,
+    "data": "/shared/rc/whiskers/JK/cmame_pideeponet/data_rough/hetero_field.npz",
+    "note": "one allocation; same protocol as the fixed-operator benchmark"
+  },
+  "n_test": 400,
+  "fem_per_query_ms": 7.931057014502585,
+  "rom": [
+    {
+      "rank": 16,
+      "online_ms": 1.932448474690318
+    },
+    {
+      "rank": 32,
+      "online_ms": 2.3758080787956715
+    },
+    {
+      "rank": 64,
+      "online_ms": 2.832157420925796
+    },
+    {
+      "rank": 128,
+      "online_ms": 4.025285481475294
+    },
+    {
+      "rank": 256,
+      "online_ms": 7.072153501212597
+    },
+    {
+      "rank": 384,
+      "online_ms": 10.89997694361955
+    },
+    {
+      "rank": 512,
+      "online_ms": 16.42094156704843
+    }
+  ],
+  "rom_svd_ms": 1136.564543005079,
+  "neural": {
+    "fno_e": {
+      "single_query_ms": 13.568927999585867,
+      "batched_ms_per_sample": 1.5140468394747586,
+      "n_params": 1188546,
+      "rel_l2_u": 0.2448413074016571,
+      "checkpoint": "fno_e_wpde0.0001_seed111.pt"
+    },
+    "spectral_e": {
+      "single_query_ms": 5.3364180494099855,
+      "batched_ms_per_sample": 0.07598799220431829,
+      "n_params": 275584,
+      "rel_l2_u": 0.7109319567680359,
+      "checkpoint": "spectral_e_wpde0.0001_seed111.pt"
+    }
+  }
+}
