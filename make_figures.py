@@ -95,11 +95,28 @@ class Bench:
                 return r
         return None
 
-    def point(self, model, fallback):
-        n = self.neural.get(model)
-        if n and n.get("rel_l2_u") is not None:
-            return n["single_query_ms"], n["rel_l2_u"]
-        return fallback
+    def point(self, model, fallback, w_pde=1e-4):
+        """Single-query cost and error of one trained variant.
+
+        Entries are keyed by checkpoint, so a directory holding both the
+        physics-informed and the data-only variant of an architecture gives two
+        matches; pick the one asked for rather than whichever sorts last.
+        """
+        # Two file formats exist: entries keyed by checkpoint carry a "model"
+        # field, earlier ones were keyed by the model name itself and carry no
+        # such field. Match either, so a figure never silently reverts to a
+        # hardcoded fallback because of the file's vintage.
+        cands = [v for k, v in self.neural.items()
+                 if v.get("model") == model or k == model or k.startswith(model + "_")]
+        if not cands:
+            raise KeyError(f"{self.label}: no checkpoint matching {model!r} in "
+                           f"{sorted(self.neural)} -- refusing to fall back "
+                           f"silently to a hardcoded point")
+        exact = [v for v in cands if v.get("w_pde") == w_pde]
+        n = (exact or cands)[0]
+        if n.get("rel_l2_u") is None:
+            raise KeyError(f"{self.label}: {model} has no recorded error")
+        return n["single_query_ms"], n["rel_l2_u"]
 
 
 SMOOTH_B = Bench(RES / "rom_field.json",

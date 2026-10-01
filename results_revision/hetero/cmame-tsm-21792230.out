@@ -1,0 +1,38 @@
+skl-a-02.rc.rit.edu
+/shared/rc/whiskers/JK/cmame_pideeponet/venv/lib64/python3.9/site-packages/numpy/_core/getlimits.py:552: UserWarning: The value of the smallest subnormal for <class 'numpy.float32'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/shared/rc/whiskers/JK/cmame_pideeponet/venv/lib64/python3.9/site-packages/numpy/_core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float32'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
+/shared/rc/whiskers/JK/cmame_pideeponet/venv/lib64/python3.9/site-packages/numpy/_core/getlimits.py:552: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/shared/rc/whiskers/JK/cmame_pideeponet/venv/lib64/python3.9/site-packages/numpy/_core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
+[protocol] threads=4 warm=5 reps=50 res=29 data=/shared/rc/whiskers/JK/cmame_pideeponet/data/hetero_field.npz
+[fem   ] per-query    7.814 ms  (re-assemble + re-factorize + solve)
+[rom   ] basis from 2000 training snapshots, SVD 841 ms
+[rom r=   8] online    1.827 ms
+[rom r=  16] online    1.952 ms
+[rom r=  32] online    2.204 ms
+[rom r=  64] online    2.622 ms
+[rom r= 128] online    3.952 ms
+[rom r= 256] online    6.833 ms
+[fno_e_wpde0.0001_seed111          ] single   13.074 ms  batched/sample   1.5962 ms  params 1188546  subnormal 0.000e+00  err 0.18918605148792267
+[fno_e_wpde0_seed111               ] single   13.155 ms  batched/sample   1.5014 ms  params 1188546  subnormal 0.000e+00  err 0.2140311598777771
+[spectral_e_wpde0.0001_seed111     ] single    1.944 ms  batched/sample   0.0266 ms  params 126752  subnormal 0.000e+00  err 0.38403207063674927
+[spectral_e_wpde0_seed111          ] single    1.944 ms  batched/sample   0.0265 ms  params 126752  subnormal 0.000e+00  err 0.4203839898109436
+
+[frontier] per-query cost against the finite-element solve (7.81 ms):
+  ROM r=   8     1.827 ms  =  0.23 x FEM
+  ROM r=  16     1.952 ms  =  0.25 x FEM
+  ROM r=  32     2.204 ms  =  0.28 x FEM
+  ROM r=  64     2.622 ms  =  0.34 x FEM
+  ROM r= 128     3.952 ms  =  0.51 x FEM
+  ROM r= 256     6.833 ms  =  0.87 x FEM
+  fno_e_wpde0.0001_seed111             13.074 ms  =  1.67 x FEM   err 0.1892
+  fno_e_wpde0_seed111                  13.155 ms  =  1.68 x FEM   err 0.2140
+  spectral_e_wpde0.0001_seed111         1.944 ms  =  0.25 x FEM   err 0.3840
+  spectral_e_wpde0_seed111              1.944 ms  =  0.25 x FEM   err 0.4204
+
+wrote /shared/rc/whiskers/JK/cmame_pideeponet/runs/hetero/timing_smooth_v2.json
+TIMINGHETEROALL_DONE
+TIMINGSMOOTHFIX_DONE
