@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 """Chunked experiment runner: resumes from checkpoints, trains for a
-wall-clock budget, saves state, exits. Survives 45s sandbox call limits."""
+wall-clock budget, saves state, exits.
+
+SUPERSEDED -- retained for provenance, do not use for new results.  It selects
+the checkpoint with the lowest TEST error and uses a 1000-sample configuration
+that differs from the canonical one.  The reported auxiliary experiments are
+produced by aux_linear_v2.py under the canonical protocol (validation-set
+selection, test set evaluated once, three seeds)."""
 import json, math, sys, time, os
-sys.path.insert(0, "/sessions/serene-elegant-cannon/mnt/CMAME")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np
 import torch
 
@@ -10,7 +16,7 @@ import cmame_extended_study as st
 import revision_new_benchmarks as rb
 
 CKPT = "/tmp/ckpts"; os.makedirs(CKPT, exist_ok=True)
-RESULTS = "/sessions/serene-elegant-cannon/mnt/CMAME/results_revision/chunk_results.jsonl"
+RESULTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "results_revision", "chunk_results.jsonl")
 os.makedirs(os.path.dirname(RESULTS), exist_ok=True)
 DEVICE = torch.device("cpu")
 EPOCHS = 800

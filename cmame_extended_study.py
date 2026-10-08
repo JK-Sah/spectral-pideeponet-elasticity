@@ -30,6 +30,13 @@ Outputs (in ./results_extended/):
     tables/fem_timing_summary.csv
     tables/noise_robustness.csv
     tables/ood_generalization.csv
+
+LEGACY NOTE (revision R1): train_model() below keeps the epoch with the lowest
+TEST error.  Results produced with it (the original ablation, noise and OOD
+figures) are superseded by canonical_linear.py, ablation_canonical.py,
+aux_linear_v2.py and eval_canonical_extras.py, which select on a validation
+set and evaluate the test set once.  The data, model and operator definitions
+in this module are unchanged and are what those scripts import.
 """
 
 import os

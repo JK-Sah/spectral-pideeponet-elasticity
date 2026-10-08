@@ -3,7 +3,16 @@
 """
 time_neural_cpu.py
 
-Time neural-operator inference on the SAME CPU as the classical baselines
+SUPERSEDED -- retained for provenance, do not use for new results.
+
+This script times freshly initialized models on random inputs, in batches of
+128, and divides by the sample count: a batched-throughput figure, not the
+single-query latency a solver is compared against.  It also predates the
+denormal control.  Use timing_linear_v3.py and timing_hetero_all.py (trained
+checkpoints, real test inputs, single-query and batched reported separately,
+denormals flushed, exclusive allocation).
+
+Original description: time neural-operator inference on the SAME CPU as the classical baselines
 in ledger.py, so the accuracy-cost comparison is hardware-consistent.
 Forward-pass cost is weight-independent, so fresh-initialized models are
 timed on random inputs of the working-grid shape.

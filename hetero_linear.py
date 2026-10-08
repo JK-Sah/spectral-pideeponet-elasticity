@@ -1,6 +1,5 @@
-import sys, json
-sys.path.insert(0, "/sessions/serene-elegant-cannon/mnt/CMAME")
-sys.path.insert(0, "/sessions/serene-elegant-cannon/mnt/outputs")
+import os, sys, json
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np, torch
 import cmame_extended_study as st
 from chunk_runner import het_strain_stress, het_residual_mse, incl_mask
@@ -60,5 +59,5 @@ for kind in ("naive", "bilin", "quad", "rat"):
 c_opt = targets(z["u_te"])
 u_fl = recon(c_opt)
 print("repr floor disp:", round(st.relative_l2(u_fl, u_te), 4))
-with open("/sessions/serene-elegant-cannon/mnt/CMAME/results_revision/chunk_results.jsonl","a") as fh:
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "results_revision", "chunk_results.jsonl"),"a") as fh:
     for r in rows: fh.write(json.dumps(r)+"\n")
