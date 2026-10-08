@@ -1,0 +1,87 @@
+{
+  "config": {
+    "n_train": 3000,
+    "n_val": 400,
+    "n_test": 200,
+    "true_modes": 16,
+    "coeff_scale": 0.04,
+    "hidden": 192,
+    "depth": 4,
+    "epochs": 800,
+    "epochs_fno": 600,
+    "fno_width": 20,
+    "fno_modes": 12,
+    "fno_layers": 4,
+    "batch": 32,
+    "lr": 0.001,
+    "weight_decay": 1e-06,
+    "w_data": 1.0,
+    "w_pde": 0.0,
+    "sched_step": 400,
+    "sched_gamma": 0.5,
+    "eval_every": 20,
+    "seed_train": 42,
+    "seed_val": 7,
+    "seed_test": 999,
+    "selection": "min validation displacement error"
+  },
+  "runs": [
+    {
+      "model": "fno",
+      "seed": 42,
+      "trunk": 16,
+      "w_pde": 0.0,
+      "val_error": 0.12337769567966461,
+      "test_error": 0.12228082865476608,
+      "selected_epoch": 460,
+      "n_params": 465526,
+      "single_query_ms": 16.713217948563397,
+      "batched_ms_per_sample": 4.062123194671585,
+      "minutes": 7.808310878276825
+    },
+    {
+      "model": "fno",
+      "seed": 43,
+      "trunk": 16,
+      "w_pde": 0.0,
+      "val_error": 0.12112835049629211,
+      "test_error": 0.12088686972856522,
+      "selected_epoch": 600,
+      "n_params": 465526,
+      "single_query_ms": 16.597246984019876,
+      "batched_ms_per_sample": 3.9920648978295503,
+      "minutes": 7.5088295062383015
+    },
+    {
+      "model": "fno",
+      "seed": 44,
+      "trunk": 16,
+      "w_pde": 0.0,
+      "val_error": 0.13267311453819275,
+      "test_error": 0.1323656141757965,
+      "selected_epoch": 500,
+      "n_params": 465526,
+      "single_query_ms": 17.274616518989205,
+      "batched_ms_per_sample": 3.7908554459136212,
+      "minutes": 7.514092767238617
+    }
+  ],
+  "closed_form": {
+    "test_error": 3.091547000622086e-07,
+    "single_query_ms": 0.8494384819641709,
+    "batched_ms_per_sample": 0.011638418072834611,
+    "n_params": 1056
+  },
+  "aggregate": {
+    "fno": {
+      "mean": 0.1251777708530426,
+      "std": 0.0051143327421621166,
+      "n_seeds": 3,
+      "values": [
+        0.12228082865476608,
+        0.12088686972856522,
+        0.1323656141757965
+      ]
+    }
+  }
+}

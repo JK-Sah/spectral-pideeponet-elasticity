@@ -1,0 +1,77 @@
+{
+  "selection": "lowest mean validation error over seeds 42-44, per model configuration",
+  "runs": [
+    {
+      "model": "plain",
+      "seed": 42,
+      "val_error": 0.3205186724662781,
+      "selected_epoch": 3700,
+      "test_error": 0.32051727175712585,
+      "n_params": 126752,
+      "minutes": 34.33655832608541,
+      "w_pde": 0.01
+    },
+    {
+      "model": "plain",
+      "seed": 43,
+      "val_error": 0.32007938623428345,
+      "selected_epoch": 3920,
+      "test_error": 0.31677719950675964,
+      "n_params": 126752,
+      "minutes": 34.672710124651594,
+      "w_pde": 0.01
+    },
+    {
+      "model": "plain",
+      "seed": 44,
+      "val_error": 0.3202890157699585,
+      "selected_epoch": 3800,
+      "test_error": 0.316776841878891,
+      "n_params": 126752,
+      "minutes": 40.45304877360662,
+      "w_pde": 0.01
+    },
+    {
+      "model": "anchored",
+      "seed": 42,
+      "val_error": 0.529314398765564,
+      "selected_epoch": 2360,
+      "test_error": 0.529163122177124,
+      "n_params": 128320,
+      "minutes": 36.31667231718699,
+      "w_pde": 0.0
+    },
+    {
+      "model": "anchored",
+      "seed": 43,
+      "val_error": 0.5318467020988464,
+      "selected_epoch": 3400,
+      "test_error": 0.5315748453140259,
+      "n_params": 128320,
+      "minutes": 34.41828806002935,
+      "w_pde": 0.0
+    },
+    {
+      "model": "anchored",
+      "seed": 44,
+      "val_error": 0.5309942364692688,
+      "selected_epoch": 3820,
+      "test_error": 0.5378420352935791,
+      "n_params": 128320,
+      "minutes": 36.22234255870183,
+      "w_pde": 0.0
+    }
+  ],
+  "aggregate": {
+    "plain": {
+      "mean": 0.31802377104759216,
+      "std": 0.0017631712666496108,
+      "w_pde": 0.01
+    },
+    "anchored": {
+      "mean": 0.532860000928243,
+      "std": 0.003657831956711456,
+      "w_pde": 0.0
+    }
+  }
+}

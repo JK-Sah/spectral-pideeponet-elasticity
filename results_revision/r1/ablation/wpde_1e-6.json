@@ -1,0 +1,64 @@
+{
+  "kind": "wpde",
+  "value": 1e-06,
+  "w_pde": 1e-06,
+  "trunk": 16,
+  "n_train": 3000,
+  "protocol": {
+    "n_train": 3000,
+    "n_val": 400,
+    "n_test": 200,
+    "true_modes": 16,
+    "coeff_scale": 0.04,
+    "hidden": 192,
+    "depth": 4,
+    "epochs": 800,
+    "epochs_fno": 600,
+    "fno_width": 20,
+    "fno_modes": 12,
+    "fno_layers": 4,
+    "batch": 32,
+    "lr": 0.001,
+    "weight_decay": 1e-06,
+    "w_data": 1.0,
+    "w_pde": 0.0001,
+    "sched_step": 400,
+    "sched_gamma": 0.5,
+    "eval_every": 20,
+    "seed_train": 42,
+    "seed_val": 7,
+    "seed_test": 999,
+    "selection": "min validation displacement error",
+    "test_evaluations": 1
+  },
+  "runs": [
+    {
+      "seed": 42,
+      "val_error": 0.2235177606344223,
+      "test_error": 0.2185405194759369,
+      "selected_epoch": 440,
+      "n_params": 123680,
+      "minutes": 16.516835657755532
+    },
+    {
+      "seed": 43,
+      "val_error": 0.23336973786354065,
+      "test_error": 0.22868873178958893,
+      "selected_epoch": 780,
+      "n_params": 123680,
+      "minutes": 16.200393648942313
+    },
+    {
+      "seed": 44,
+      "val_error": 0.23254001140594482,
+      "test_error": 0.2286255955696106,
+      "selected_epoch": 780,
+      "n_params": 123680,
+      "minutes": 16.087359245618185
+    }
+  ],
+  "val_mean": 0.22980916996796927,
+  "val_std": 0.00446157558494679,
+  "test_mean": 0.22528494894504547,
+  "test_std": 0.00476910146627248
+}

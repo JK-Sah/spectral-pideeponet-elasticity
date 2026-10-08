@@ -1,0 +1,185 @@
+{
+  "config": {
+    "n_train": 3000,
+    "n_val": 400,
+    "n_test": 200,
+    "true_modes": 16,
+    "coeff_scale": 0.04,
+    "hidden": 192,
+    "depth": 4,
+    "epochs": 800,
+    "epochs_fno": 600,
+    "fno_width": 20,
+    "fno_modes": 12,
+    "fno_layers": 4,
+    "batch": 32,
+    "lr": 0.001,
+    "weight_decay": 1e-06,
+    "w_data": 1.0,
+    "w_pde": 0.03,
+    "sched_step": 400,
+    "sched_gamma": 0.5,
+    "eval_every": 20,
+    "seed_train": 42,
+    "seed_val": 7,
+    "seed_test": 999,
+    "selection": "min validation displacement error"
+  },
+  "runs": [
+    {
+      "model": "pi_spectral_plain",
+      "seed": 42,
+      "trunk": 16,
+      "w_pde": 0.03,
+      "val_error": 0.014870787039399147,
+      "test_error": 0.015028629451990128,
+      "selected_epoch": 740,
+      "n_params": 123680,
+      "single_query_ms": 0.9989070240408182,
+      "batched_ms_per_sample": 0.012739608791889623,
+      "minutes": 7.531509538491567
+    },
+    {
+      "model": "pi_spectral_anchored",
+      "seed": 42,
+      "trunk": 16,
+      "w_pde": 0.03,
+      "val_error": 0.010059697553515434,
+      "test_error": 0.009709062054753304,
+      "selected_epoch": 420,
+      "n_params": 124736,
+      "single_query_ms": 1.0265634628012776,
+      "batched_ms_per_sample": 0.013110074178257491,
+      "minutes": 7.443480829397838
+    },
+    {
+      "model": "fno",
+      "seed": 42,
+      "trunk": 16,
+      "w_pde": 0.03,
+      "val_error": 0.15600208938121796,
+      "test_error": 0.15446364879608154,
+      "selected_epoch": 480,
+      "n_params": 465526,
+      "single_query_ms": 10.547955520451069,
+      "batched_ms_per_sample": 0.5931252153459354,
+      "minutes": 9.958999129136403
+    },
+    {
+      "model": "pi_spectral_plain",
+      "seed": 43,
+      "trunk": 16,
+      "w_pde": 0.03,
+      "val_error": 0.016219766810536385,
+      "test_error": 0.01609397679567337,
+      "selected_epoch": 640,
+      "n_params": 123680,
+      "single_query_ms": 0.9944925550371408,
+      "batched_ms_per_sample": 0.01267425795958843,
+      "minutes": 7.281025683879852
+    },
+    {
+      "model": "pi_spectral_anchored",
+      "seed": 43,
+      "trunk": 16,
+      "w_pde": 0.03,
+      "val_error": 0.008593798615038395,
+      "test_error": 0.00838011410087347,
+      "selected_epoch": 420,
+      "n_params": 124736,
+      "single_query_ms": 1.0196685325354338,
+      "batched_ms_per_sample": 0.012740687452605926,
+      "minutes": 7.425525188446045
+    },
+    {
+      "model": "fno",
+      "seed": 43,
+      "trunk": 16,
+      "w_pde": 0.03,
+      "val_error": 0.16927120089530945,
+      "test_error": 0.1661870777606964,
+      "selected_epoch": 580,
+      "n_params": 465526,
+      "single_query_ms": 10.486255399882793,
+      "batched_ms_per_sample": 0.6426248719435534,
+      "minutes": 9.711225004990895
+    },
+    {
+      "model": "pi_spectral_plain",
+      "seed": 44,
+      "trunk": 16,
+      "w_pde": 0.03,
+      "val_error": 0.017759887501597404,
+      "test_error": 0.017208881676197052,
+      "selected_epoch": 720,
+      "n_params": 123680,
+      "single_query_ms": 0.9860715363174677,
+      "batched_ms_per_sample": 0.012964929737790953,
+      "minutes": 7.160845629374186
+    },
+    {
+      "model": "pi_spectral_anchored",
+      "seed": 44,
+      "trunk": 16,
+      "w_pde": 0.03,
+      "val_error": 0.00678268214687705,
+      "test_error": 0.006733734160661697,
+      "selected_epoch": 420,
+      "n_params": 124736,
+      "single_query_ms": 1.0056005557999015,
+      "batched_ms_per_sample": 0.013176539141568355,
+      "minutes": 7.3667842189470925
+    },
+    {
+      "model": "fno",
+      "seed": 44,
+      "trunk": 16,
+      "w_pde": 0.03,
+      "val_error": 0.18434326350688934,
+      "test_error": 0.18134844303131104,
+      "selected_epoch": 460,
+      "n_params": 465526,
+      "single_query_ms": 10.44658396858722,
+      "batched_ms_per_sample": 0.5999522536512814,
+      "minutes": 9.71495334704717
+    }
+  ],
+  "closed_form": {
+    "test_error": 3.091547000622086e-07,
+    "single_query_ms": 0.8621119195595384,
+    "batched_ms_per_sample": 0.00992999594018329,
+    "n_params": 1056
+  },
+  "aggregate": {
+    "pi_spectral_plain": {
+      "mean": 0.016110495974620182,
+      "std": 0.0008901608853627221,
+      "n_seeds": 3,
+      "values": [
+        0.015028629451990128,
+        0.01609397679567337,
+        0.017208881676197052
+      ]
+    },
+    "pi_spectral_anchored": {
+      "mean": 0.008274303438762823,
+      "std": 0.001216974648189002,
+      "n_seeds": 3,
+      "values": [
+        0.009709062054753304,
+        0.00838011410087347,
+        0.006733734160661697
+      ]
+    },
+    "fno": {
+      "mean": 0.167333056529363,
+      "std": 0.011005543777912814,
+      "n_seeds": 3,
+      "values": [
+        0.15446364879608154,
+        0.1661870777606964,
+        0.18134844303131104
+      ]
+    }
+  }
+}

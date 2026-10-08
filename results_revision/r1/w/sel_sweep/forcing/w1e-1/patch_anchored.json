@@ -1,0 +1,106 @@
+{
+  "exp": "patch_anchored",
+  "config": {
+    "data": "patch",
+    "nu": 0.3,
+    "model": "anchored",
+    "w_pde": 0.1,
+    "trunk": 16
+  },
+  "protocol": {
+    "n_train": 3000,
+    "n_val": 400,
+    "n_test": 200,
+    "true_modes": 16,
+    "coeff_scale": 0.04,
+    "hidden": 192,
+    "depth": 4,
+    "epochs": 800,
+    "epochs_fno": 600,
+    "fno_width": 20,
+    "fno_modes": 12,
+    "fno_layers": 4,
+    "batch": 32,
+    "lr": 0.001,
+    "weight_decay": 1e-06,
+    "w_data": 1.0,
+    "w_pde": 0.0001,
+    "sched_step": 400,
+    "sched_gamma": 0.5,
+    "eval_every": 20,
+    "seed_train": 42,
+    "seed_val": 7,
+    "seed_test": 999,
+    "selection": "min validation displacement error",
+    "test_evaluations": 1,
+    "seeds": [
+      42,
+      43,
+      44
+    ]
+  },
+  "runs": [
+    {
+      "seed": 42,
+      "val_error": 0.15621796250343323,
+      "selected_epoch": 100,
+      "n_params": 124736,
+      "minutes": 10.637426618734995,
+      "disp_l2": 0.1537596434354782,
+      "strain_l2": 0.26145413517951965,
+      "stress_l2": 0.22186584770679474,
+      "energy_err": 0.17632785439491272,
+      "pde_mse": 0.03285078704357147
+    },
+    {
+      "seed": 43,
+      "val_error": 0.15634557604789734,
+      "selected_epoch": 420,
+      "n_params": 124736,
+      "minutes": 9.757806626955668,
+      "disp_l2": 0.1541139781475067,
+      "strain_l2": 0.26201319694519043,
+      "stress_l2": 0.22214792668819427,
+      "energy_err": 0.17441171407699585,
+      "pde_mse": 0.03282016143202782
+    },
+    {
+      "seed": 44,
+      "val_error": 0.15580658614635468,
+      "selected_epoch": 580,
+      "n_params": 124736,
+      "minutes": 11.112191073099773,
+      "disp_l2": 0.15500524640083313,
+      "strain_l2": 0.2646796703338623,
+      "stress_l2": 0.22852769494056702,
+      "energy_err": 0.17245516180992126,
+      "pde_mse": 0.03305378183722496
+    }
+  ],
+  "aggregate": {
+    "val_error": {
+      "mean": 0.15612337489922842,
+      "std": 0.0002299820857416905
+    },
+    "disp_l2": {
+      "mean": 0.15429295599460602,
+      "std": 0.0005240270280176196
+    },
+    "strain_l2": {
+      "mean": 0.2627156674861908,
+      "std": 0.0014073895228886419
+    },
+    "stress_l2": {
+      "mean": 0.22418048977851868,
+      "std": 0.0030760945671030825
+    },
+    "energy_err": {
+      "mean": 0.1743982434272766,
+      "std": 0.001581048820301436
+    },
+    "pde_mse": {
+      "mean": 0.032908243437608085,
+      "std": 0.00010366790356031806
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "config": {
+    "n_train": 3000,
+    "n_val": 400,
+    "n_test": 200,
+    "true_modes": 16,
+    "coeff_scale": 0.04,
+    "hidden": 192,
+    "depth": 4,
+    "epochs": 800,
+    "epochs_fno": 600,
+    "fno_width": 20,
+    "fno_modes": 12,
+    "fno_layers": 4,
+    "batch": 32,
+    "lr": 0.001,
+    "weight_decay": 1e-06,
+    "w_data": 1.0,
+    "w_pde": 0.001,
+    "sched_step": 400,
+    "sched_gamma": 0.5,
+    "eval_every": 20,
+    "seed_train": 42,
+    "seed_val": 7,
+    "seed_test": 999,
+    "selection": "min validation displacement error"
+  },
+  "runs": [
+    {
+      "model": "fno",
+      "seed": 42,
+      "trunk": 16,
+      "w_pde": 0.001,
+      "val_error": 0.10702598839998245,
+      "test_error": 0.10504607111215591,
+      "selected_epoch": 520,
+      "n_params": 465526,
+      "single_query_ms": 14.596260502003133,
+      "batched_ms_per_sample": 3.1037730896059657,
+      "minutes": 10.517169801394145
+    },
+    {
+      "model": "fno",
+      "seed": 43,
+      "trunk": 16,
+      "w_pde": 0.001,
+      "val_error": 0.12281323224306107,
+      "test_error": 0.12131157517433167,
+      "selected_epoch": 400,
+      "n_params": 465526,
+      "single_query_ms": 12.52984581515193,
+      "batched_ms_per_sample": 2.155530472009559,
+      "minutes": 10.109195824464162
+    },
+    {
+      "model": "fno",
+      "seed": 44,
+      "trunk": 16,
+      "w_pde": 0.001,
+      "val_error": 0.11018483340740204,
+      "test_error": 0.10891559720039368,
+      "selected_epoch": 600,
+      "n_params": 465526,
+      "single_query_ms": 11.751539423130453,
+      "batched_ms_per_sample": 0.9366291060359799,
+      "minutes": 10.112507379055023
+    }
+  ],
+  "closed_form": {
+    "test_error": 3.091547000622086e-07,
+    "single_query_ms": 0.8653034456074238,
+    "batched_ms_per_sample": 0.012709441762126517,
+    "n_params": 1056
+  },
+  "aggregate": {
+    "fno": {
+      "mean": 0.11175774782896042,
+      "std": 0.006937820058479498,
+      "n_seeds": 3,
+      "values": [
+        0.10504607111215591,
+        0.12131157517433167,
+        0.10891559720039368
+      ]
+    }
+  }
+}

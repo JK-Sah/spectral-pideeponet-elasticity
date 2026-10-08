@@ -1,0 +1,59 @@
+{
+  "config": {
+    "data": "/shared/rc/whiskers/JK/cmame_pideeponet/data/hetero_field.npz",
+    "seeds": [
+      44
+    ],
+    "modes": 16,
+    "cos_modes": 16,
+    "hidden": 192,
+    "depth": 4,
+    "epochs": 4000,
+    "batch": 32,
+    "lr": 0.001,
+    "w_pde": 0.0,
+    "eval_every": 20,
+    "val_frac": 0.2,
+    "split_seed": 42,
+    "res": 29,
+    "nu": 0.3,
+    "device": "cpu",
+    "out": "/shared/rc/whiskers/JK/cmame_pideeponet/runs/r1/w/hetero/anchored_w0_s44.json"
+  },
+  "runs": [
+    {
+      "model": "plain",
+      "seed": 44,
+      "val_error": 0.40830090641975403,
+      "selected_epoch": 3960,
+      "test_error": 0.4087434709072113,
+      "n_params": 126752,
+      "minutes": 18.18405285278956
+    },
+    {
+      "model": "anchored",
+      "seed": 44,
+      "val_error": 0.5309942364692688,
+      "selected_epoch": 3820,
+      "test_error": 0.5378420352935791,
+      "n_params": 128320,
+      "minutes": 36.22234255870183
+    }
+  ],
+  "aggregate": {
+    "plain": {
+      "mean": 0.4087434709072113,
+      "std": 0.0,
+      "values": [
+        0.4087434709072113
+      ]
+    },
+    "anchored": {
+      "mean": 0.5378420352935791,
+      "std": 0.0,
+      "values": [
+        0.5378420352935791
+      ]
+    }
+  }
+}

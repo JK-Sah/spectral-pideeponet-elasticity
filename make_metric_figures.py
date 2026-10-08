@@ -26,7 +26,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-RES = Path("results_revision/linear")
+RES = Path("results_revision/r1/w/linear_sel")   # per-model selected checkpoints
 OUT = Path("../CompMech_submission_ready")
 
 plt.rcParams.update({"font.size": 10, "font.family": "serif",
@@ -61,7 +61,8 @@ def bars(ax, title):
     ax.set_xticklabels([lab for _, lab in METRICS])
     ax.set_ylabel("Error / residual (log scale)")
     ax.set_title(title)
-    ax.legend(loc="upper left", fontsize=8.5, framealpha=0.9)
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.10), ncol=3, fontsize=8.5,
+              frameon=False)
     ax.grid(axis="y", which="both", ls="--", alpha=0.4)
 
 

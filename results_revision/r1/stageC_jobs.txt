@@ -1,0 +1,6 @@
+lin_cpu=21799200 lin_gpu=21799201 het_cpu=21799203 het_gpu=21799204 (+ stage-B 21799140 21799141) launch=21799205
+het_ext=21801243 launch=21801244
+het_ext2=21801589 launch=21801590
+submitted r1C-tlin 21805499
+resubmitted r1C-tlin 21813189 (exclude skl-a-23; 21805499 failed twice on that node)
+resubmitted r1C-tlin 21816192 (exclude skl-a-07,skl-a-21,skl-a-23,skl-a-24,skl-a-27,skl-a-61,skl-a-63: not responding on 2026-10-06; 21813189 failed in 4 s on skl-a-24)

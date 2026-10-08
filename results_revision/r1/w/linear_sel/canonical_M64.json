@@ -1,0 +1,225 @@
+{
+  "selection": "lowest mean validation error over seeds 42-44, per model configuration",
+  "runs": [
+    {
+      "model": "pi_spectral_plain",
+      "seed": 42,
+      "trunk": 64,
+      "w_pde": 0.01,
+      "val_error": 0.015655267983675003,
+      "test_error": 0.015760798007249832,
+      "selected_epoch": 740,
+      "n_params": 160640,
+      "single_query_ms": 3.0837884405627847,
+      "batched_ms_per_sample": 0.07376399207714712,
+      "minutes": 17.194373754660287,
+      "source": "/shared/rc/whiskers/JK/cmame_pideeponet/runs/r1/w/sel_sweep/lin/w1e-2/canonical_pi_spectral_plain_M64.json"
+    },
+    {
+      "model": "pi_spectral_plain",
+      "seed": 43,
+      "trunk": 64,
+      "w_pde": 0.01,
+      "val_error": 0.0164333526045084,
+      "test_error": 0.016598710790276527,
+      "selected_epoch": 800,
+      "n_params": 160640,
+      "single_query_ms": 3.087413962930441,
+      "batched_ms_per_sample": 0.05839755067427177,
+      "minutes": 16.013241501649222,
+      "source": "/shared/rc/whiskers/JK/cmame_pideeponet/runs/r1/w/sel_sweep/lin/w1e-2/canonical_pi_spectral_plain_M64.json"
+    },
+    {
+      "model": "pi_spectral_plain",
+      "seed": 44,
+      "trunk": 64,
+      "w_pde": 0.01,
+      "val_error": 0.01615040749311447,
+      "test_error": 0.016414780169725418,
+      "selected_epoch": 600,
+      "n_params": 160640,
+      "single_query_ms": 3.0930929351598024,
+      "batched_ms_per_sample": 0.07555678530479781,
+      "minutes": 17.042051855723063,
+      "source": "/shared/rc/whiskers/JK/cmame_pideeponet/runs/r1/w/sel_sweep/lin/w1e-2/canonical_pi_spectral_plain_M64.json"
+    },
+    {
+      "model": "pi_spectral_anchored",
+      "seed": 42,
+      "trunk": 64,
+      "w_pde": 0.0001,
+      "val_error": 0.004042402375489473,
+      "test_error": 0.004023530054837465,
+      "selected_epoch": 420,
+      "n_params": 177152,
+      "single_query_ms": 2.5132444989139913,
+      "batched_ms_per_sample": 0.038757402336386804,
+      "minutes": 10.375434422492981,
+      "source": "/shared/rc/whiskers/JK/cmame_pideeponet/runs/linear/canonical_M64.json"
+    },
+    {
+      "model": "pi_spectral_anchored",
+      "seed": 43,
+      "trunk": 64,
+      "w_pde": 0.0001,
+      "val_error": 0.004781865980476141,
+      "test_error": 0.004885328002274036,
+      "selected_epoch": 420,
+      "n_params": 177152,
+      "single_query_ms": 2.508237499569077,
+      "batched_ms_per_sample": 0.03133840625935136,
+      "minutes": 10.234497026602428,
+      "source": "/shared/rc/whiskers/JK/cmame_pideeponet/runs/linear/canonical_M64.json"
+    },
+    {
+      "model": "pi_spectral_anchored",
+      "seed": 44,
+      "trunk": 64,
+      "w_pde": 0.0001,
+      "val_error": 0.004070958588272333,
+      "test_error": 0.004041674081236124,
+      "selected_epoch": 420,
+      "n_params": 177152,
+      "single_query_ms": 2.4916854981711367,
+      "batched_ms_per_sample": 0.031427117207272204,
+      "minutes": 10.177791730562847,
+      "source": "/shared/rc/whiskers/JK/cmame_pideeponet/runs/linear/canonical_M64.json"
+    },
+    {
+      "model": "fno",
+      "seed": 42,
+      "trunk": 16,
+      "w_pde": 0.0001,
+      "val_error": 0.10576870292425156,
+      "test_error": 0.10398400574922562,
+      "selected_epoch": 600,
+      "n_params": 465526,
+      "single_query_ms": 16.60205450025387,
+      "batched_ms_per_sample": 5.553044476556579,
+      "minutes": 10.678689352671306,
+      "source": "/shared/rc/whiskers/JK/cmame_pideeponet/runs/linear/canonical_M16.json"
+    },
+    {
+      "model": "fno",
+      "seed": 43,
+      "trunk": 16,
+      "w_pde": 0.0001,
+      "val_error": 0.10982968658208847,
+      "test_error": 0.10894127190113068,
+      "selected_epoch": 580,
+      "n_params": 465526,
+      "single_query_ms": 15.478421499210526,
+      "batched_ms_per_sample": 4.388680941403322,
+      "minutes": 10.363642350832622,
+      "source": "/shared/rc/whiskers/JK/cmame_pideeponet/runs/linear/canonical_M16.json"
+    },
+    {
+      "model": "fno",
+      "seed": 44,
+      "trunk": 16,
+      "w_pde": 0.0001,
+      "val_error": 0.12330576032400131,
+      "test_error": 0.12070497870445251,
+      "selected_epoch": 600,
+      "n_params": 465526,
+      "single_query_ms": 12.928749500133563,
+      "batched_ms_per_sample": 1.8701204921853787,
+      "minutes": 9.89577225446701,
+      "source": "/shared/rc/whiskers/JK/cmame_pideeponet/runs/linear/canonical_M16.json"
+    },
+    {
+      "model": "data_only_spectral",
+      "seed": 42,
+      "trunk": 64,
+      "w_pde": 0.0,
+      "val_error": 0.234439417719841,
+      "test_error": 0.22972622513771057,
+      "selected_epoch": 700,
+      "n_params": 160640,
+      "single_query_ms": 2.5451074998272816,
+      "batched_ms_per_sample": 0.08754835157276375,
+      "minutes": 6.500860488414764,
+      "source": "/shared/rc/whiskers/JK/cmame_pideeponet/runs/linear/canonical_M64.json"
+    },
+    {
+      "model": "data_only_spectral",
+      "seed": 43,
+      "trunk": 64,
+      "w_pde": 0.0,
+      "val_error": 0.23364870250225067,
+      "test_error": 0.2284737080335617,
+      "selected_epoch": 720,
+      "n_params": 160640,
+      "single_query_ms": 2.541966498029069,
+      "batched_ms_per_sample": 0.08087254688859957,
+      "minutes": 6.407082732518514,
+      "source": "/shared/rc/whiskers/JK/cmame_pideeponet/runs/linear/canonical_M64.json"
+    },
+    {
+      "model": "data_only_spectral",
+      "seed": 44,
+      "trunk": 64,
+      "w_pde": 0.0,
+      "val_error": 0.2340712994337082,
+      "test_error": 0.23042738437652588,
+      "selected_epoch": 560,
+      "n_params": 160640,
+      "single_query_ms": 2.530981500967755,
+      "batched_ms_per_sample": 0.0813361835980686,
+      "minutes": 6.348004178206126,
+      "source": "/shared/rc/whiskers/JK/cmame_pideeponet/runs/linear/canonical_M64.json"
+    }
+  ],
+  "aggregate": {
+    "pi_spectral_plain": {
+      "mean": 0.01625809632241726,
+      "std": 0.0003595708822057669,
+      "n_seeds": 3,
+      "values": [
+        0.015760798007249832,
+        0.016598710790276527,
+        0.016414780169725418
+      ],
+      "w_pde": 0.01
+    },
+    "data_only_spectral": {
+      "mean": 0.2295424391825994,
+      "std": 0.0008081030343698193,
+      "n_seeds": 3,
+      "values": [
+        0.22972622513771057,
+        0.2284737080335617,
+        0.23042738437652588
+      ],
+      "w_pde": 0.0
+    },
+    "pi_spectral_anchored": {
+      "mean": 0.004316844046115875,
+      "std": 0.0004020471014946834,
+      "n_seeds": 3,
+      "values": [
+        0.004023530054837465,
+        0.004885328002274036,
+        0.004041674081236124
+      ],
+      "w_pde": 0.0001
+    },
+    "fno": {
+      "mean": 0.11121008545160294,
+      "std": 0.007012292556050517,
+      "n_seeds": 3,
+      "values": [
+        0.10398400574922562,
+        0.10894127190113068,
+        0.12070497870445251
+      ],
+      "w_pde": 0.0001
+    }
+  },
+  "closed_form": {
+    "test_error": 4.991333639736695e-07,
+    "single_query_ms": 2.3440325167030096,
+    "batched_ms_per_sample": 0.03500539878587006,
+    "n_params": 16512
+  }
+}
