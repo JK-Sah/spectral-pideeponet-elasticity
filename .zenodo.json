@@ -1,0 +1,25 @@
+{
+  "title": "spectral-pideeponet-elasticity: code for \"Do neural operators beat classical solvers for linear elasticity? A strong-baseline, full-cost benchmark\"",
+  "upload_type": "software",
+  "description": "<p>Source code for the paper <em>Do neural operators beat classical solvers for linear elasticity? A strong-baseline, full-cost benchmark</em> (J.K. Sah). It contains the data generators, the learned operators (boundary-compatible spectral DeepONet, least-squares-anchored branch, Fourier neural operator), the classical baselines (Q4 finite elements with factorization reuse, POD-Galerkin, POD-DEIM, closed-form least-squares read-out, Newton finite elements for the finite-strain benchmark), the timing scripts, the Slurm job scripts used on RIT's SPORC cluster, and the result files (JSON) from which every table and figure of the paper is generated. Trained checkpoints and the generated datasets are not included; the scripts regenerate them.</p>",
+  "creators": [
+    {
+      "name": "Sah, J.K.",
+      "affiliation": "Rochester Institute of Technology",
+      "orcid": "0000-0002-7643-5137"
+    }
+  ],
+  "license": "MIT",
+  "access_right": "open",
+  "version": "1.0.0",
+  "keywords": [
+    "operator learning",
+    "physics-informed neural networks",
+    "DeepONet",
+    "Fourier neural operator",
+    "reduced-order models",
+    "linear elasticity",
+    "finite-strain hyperelasticity",
+    "benchmarking"
+  ]
+}

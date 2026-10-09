@@ -37,6 +37,12 @@ Outputs:
         checkpoints/
         logs/
 
+LEGACY NOTE (revision R1): the training loop below keeps the epoch with the
+lowest TEST error.  Results produced with it (the original ablation figure and
+the original headline numbers) are superseded by canonical_linear.py and
+ablation_canonical.py, which select on a validation set and evaluate the test
+set once.  The data, model and operator definitions in this module are
+unchanged and are what those scripts import.
 """
 
 import os
