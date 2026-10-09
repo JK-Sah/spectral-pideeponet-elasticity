@@ -1,0 +1,110 @@
+{
+  "protocol": {
+    "threads": 4,
+    "warm": 5,
+    "reps": 50,
+    "n_test": 200,
+    "assembly": "vectorized COO (HeteroFieldQ4), uniform E for the fixed-operator benchmark",
+    "note": "one exclusive allocation; same node and thread count as the learned-model timings"
+  },
+  "equivalence_rel_diff": 0.0,
+  "fem": [
+    {
+      "res": 15,
+      "n_dof": 450,
+      "setup_ms": 9.823221014812589,
+      "solve_only_ms": 0.07804750930517912,
+      "amortized_ms": 0.12716361437924206,
+      "per_query_ms": 1.862415112555027,
+      "per_query_with_setup_ms": 9.045928018167615
+    },
+    {
+      "res": 29,
+      "n_dof": 1682,
+      "setup_ms": 37.9111988004297,
+      "solve_only_ms": 0.39957696571946144,
+      "amortized_ms": 0.58913295972161,
+      "per_query_ms": 7.864028098993003,
+      "per_query_with_setup_ms": 36.62072215229273
+    },
+    {
+      "res": 57,
+      "n_dof": 6498,
+      "setup_ms": 173.77542308531702,
+      "solve_only_ms": 1.9530110293999314,
+      "amortized_ms": 2.8218881448265165,
+      "per_query_ms": 53.58481896109879,
+      "per_query_with_setup_ms": 169.9987140018493
+    },
+    {
+      "res": 113,
+      "n_dof": 25538,
+      "setup_ms": 992.0038857962936,
+      "solve_only_ms": 12.401863932609558,
+      "amortized_ms": 17.361883361591026,
+      "per_query_ms": 397.60479249525815,
+      "per_query_with_setup_ms": 903.3394269645214
+    }
+  ],
+  "rom": [
+    {
+      "rank": 8,
+      "online_ms": 0.015727360732853413
+    },
+    {
+      "rank": 16,
+      "online_ms": 0.019042985513806343
+    },
+    {
+      "rank": 32,
+      "online_ms": 0.03134447615593672
+    },
+    {
+      "rank": 64,
+      "online_ms": 0.07558090146631002
+    },
+    {
+      "rank": 128,
+      "online_ms": 0.15108904335647821
+    }
+  ],
+  "offline": {
+    "n_snapshots": 200,
+    "fem_assemble_factorize_ms": 37.64462098479271,
+    "rom_snapshot_ms": 85.32974380068481,
+    "rom_svd_ms": 25.67276987247169,
+    "rom_projection_r32_ms": 0.7973478641360998,
+    "rom_total_ms": 111.7998615372926,
+    "note": "the reduced model is charged for generating its own snapshots, which on this manufactured family is the dominant offline term"
+  },
+  "hetero": {
+    "res": 29,
+    "fem_per_query_ms": 7.853222079575062,
+    "rom": [
+      {
+        "rank": 8,
+        "online_ms": 1.8137050792574883
+      },
+      {
+        "rank": 16,
+        "online_ms": 1.9245855510234833
+      },
+      {
+        "rank": 32,
+        "online_ms": 2.1998059237375855
+      },
+      {
+        "rank": 64,
+        "online_ms": 2.617414458654821
+      },
+      {
+        "rank": 128,
+        "online_ms": 4.0952799608930945
+      },
+      {
+        "rank": 256,
+        "online_ms": 6.426015985198319
+      }
+    ]
+  }
+}

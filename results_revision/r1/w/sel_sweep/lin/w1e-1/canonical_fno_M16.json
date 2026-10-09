@@ -1,0 +1,87 @@
+{
+  "config": {
+    "n_train": 3000,
+    "n_val": 400,
+    "n_test": 200,
+    "true_modes": 16,
+    "coeff_scale": 0.04,
+    "hidden": 192,
+    "depth": 4,
+    "epochs": 800,
+    "epochs_fno": 600,
+    "fno_width": 20,
+    "fno_modes": 12,
+    "fno_layers": 4,
+    "batch": 32,
+    "lr": 0.001,
+    "weight_decay": 1e-06,
+    "w_data": 1.0,
+    "w_pde": 0.1,
+    "sched_step": 400,
+    "sched_gamma": 0.5,
+    "eval_every": 20,
+    "seed_train": 42,
+    "seed_val": 7,
+    "seed_test": 999,
+    "selection": "min validation displacement error"
+  },
+  "runs": [
+    {
+      "model": "fno",
+      "seed": 42,
+      "trunk": 16,
+      "w_pde": 0.1,
+      "val_error": 0.1859968602657318,
+      "test_error": 0.18140272796154022,
+      "selected_epoch": 600,
+      "n_params": 465526,
+      "single_query_ms": 10.772567940875888,
+      "batched_ms_per_sample": 0.984289105872449,
+      "minutes": 9.89088295698166
+    },
+    {
+      "model": "fno",
+      "seed": 43,
+      "trunk": 16,
+      "w_pde": 0.1,
+      "val_error": 0.21257957816123962,
+      "test_error": 0.20795738697052002,
+      "selected_epoch": 560,
+      "n_params": 465526,
+      "single_query_ms": 10.728678433224559,
+      "batched_ms_per_sample": 0.9641432034186437,
+      "minutes": 9.719151326020558
+    },
+    {
+      "model": "fno",
+      "seed": 44,
+      "trunk": 16,
+      "w_pde": 0.1,
+      "val_error": 0.24346904456615448,
+      "test_error": 0.2376375049352646,
+      "selected_epoch": 580,
+      "n_params": 465526,
+      "single_query_ms": 10.726441047154367,
+      "batched_ms_per_sample": 0.9593127897460363,
+      "minutes": 9.729602638880412
+    }
+  ],
+  "closed_form": {
+    "test_error": 3.091547000622086e-07,
+    "single_query_ms": 0.8326940005645156,
+    "batched_ms_per_sample": 0.011418820577091537,
+    "n_params": 1056
+  },
+  "aggregate": {
+    "fno": {
+      "mean": 0.20899920662244162,
+      "std": 0.022969567931816183,
+      "n_seeds": 3,
+      "values": [
+        0.18140272796154022,
+        0.20795738697052002,
+        0.2376375049352646
+      ]
+    }
+  }
+}

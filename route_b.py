@@ -221,7 +221,18 @@ def train(args):
     device = get_device(args.device)
     phys = PhysicsConfig(res=args.res, nu=args.nu)
     f_tr, E_tr, u_tr, f_te, E_te, u_te = load_data(args.data)
-    print(f"data: train {tuple(f_tr.shape)}  test {tuple(f_te.shape)}  device {device}")
+    # Checkpoint selection uses a validation split carved from the training pool;
+    # the test set is never used to choose a checkpoint.  The split is the one
+    # hetero_anchored.py uses (rng seed 42, 20%), so the two experiments agree.
+    f_va = E_va = u_va = None
+    if args.val_frac > 0:
+        perm = np.random.default_rng(args.split_seed).permutation(f_tr.shape[0])
+        nval = int(round(args.val_frac * f_tr.shape[0]))
+        vi, ti = perm[:nval], perm[nval:]
+        f_va, E_va, u_va = f_tr[vi], E_tr[vi], u_tr[vi]
+        f_tr, E_tr, u_tr = f_tr[ti], E_tr[ti], u_tr[ti]
+    print(f"data: train {tuple(f_tr.shape)}  val {0 if f_va is None else f_va.shape[0]}  "
+          f"test {tuple(f_te.shape)}  device {device}")
 
     model = build_model(args.model, phys, args).to(device)
     n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
@@ -230,7 +241,8 @@ def train(args):
 
     f_trd, E_trd, u_trd = f_tr.to(device), E_tr.to(device), u_tr.to(device)
     n = f_tr.shape[0]
-    best = float("inf"); best_state = None
+    best = float("inf"); best_state = None; best_ep = -1
+    best_on_test = float("inf")          # diagnostic only, never used for selection
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
 
     for ep in range(1, args.epochs + 1):
@@ -246,20 +258,34 @@ def train(args):
             opt.zero_grad(set_to_none=True); loss.backward(); opt.step()
         sched.step()
         if ep % args.eval_every == 0 or ep == 1 or ep == args.epochs:
-            m = evaluate(model, f_te, E_te, u_te, phys, device)
-            if m["rel_l2_u"] < best:
-                best = m["rel_l2_u"]; best_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
-            print(f"[{args.model}] ep {ep:4d}/{args.epochs}  u={m['rel_l2_u']:.4f} "
-                  f"sig={m['rel_l2_stress']:.4f}  resMSE={m['residual_mse']:.3e}  best={best:.4f}")
+            if f_va is not None:
+                mv = evaluate(model, f_va, E_va, u_va, phys, device)["rel_l2_u"]
+                mt = evaluate(model, f_te, E_te, u_te, phys, device)["rel_l2_u"]
+                best_on_test = min(best_on_test, mt)
+                sel = mv
+            else:   # legacy behaviour (selection on test), kept only to reproduce old runs
+                sel = mt = evaluate(model, f_te, E_te, u_te, phys, device)["rel_l2_u"]
+            if sel < best:
+                best, best_ep = sel, ep
+                best_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
+            print(f"[{args.model}] ep {ep:4d}/{args.epochs}  sel={sel:.4f}  test={mt:.4f}  "
+                  f"best={best:.4f}@{best_ep}")
 
     if best_state is not None:
         model.load_state_dict(best_state)
-    final = evaluate(model, f_te, E_te, u_te, phys, device)
-    final["best_rel_l2_u"] = best
+    final = evaluate(model, f_te, E_te, u_te, phys, device)     # the one held-out evaluation
+    final["selection"] = "min validation error" if f_va is not None else "min test error (legacy)"
+    final["val_error"] = best if f_va is not None else None
+    final["selected_epoch"] = best_ep
+    final["test_error_best_epoch_optimistic"] = best_on_test if f_va is not None else None
+    final["n_train"] = int(f_tr.shape[0]); final["n_val"] = 0 if f_va is None else int(f_va.shape[0])
+    final["seed"] = args.seed
+    final["config"] = {k: v for k, v in vars(args).items()}
     final["n_params"] = n_params
     final["model"] = args.model
     final["w_pde"] = args.w_pde
-    tag = f"{args.model}_wpde{args.w_pde:g}_seed{args.seed}"
+    trunk = f"_M{args.modes}" if args.model == "spectral_e" else ""
+    tag = f"{args.model}{trunk}_wpde{args.w_pde:g}_seed{args.seed}"
     torch.save({"state": model.state_dict(), "args": vars(args), "final": final},
                out / f"{tag}.pt")
     with open(out / f"{tag}.json", "w") as fh:
@@ -287,6 +313,10 @@ def parse_args():
     p.add_argument("--device", default="auto")
     p.add_argument("--seed", type=int, default=111)
     p.add_argument("--eval_every", type=int, default=20)
+    p.add_argument("--val_frac", type=float, default=0.20,
+                   help="validation fraction of the training pool; 0 restores the legacy "
+                        "test-set selection and must not be used for reported results")
+    p.add_argument("--split_seed", type=int, default=42)
     p.add_argument("--out", default="runs/route_b")
     return p.parse_args()
 

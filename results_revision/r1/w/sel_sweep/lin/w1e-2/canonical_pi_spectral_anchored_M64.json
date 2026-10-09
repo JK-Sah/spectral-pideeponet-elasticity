@@ -1,0 +1,87 @@
+{
+  "config": {
+    "n_train": 3000,
+    "n_val": 400,
+    "n_test": 200,
+    "true_modes": 16,
+    "coeff_scale": 0.04,
+    "hidden": 192,
+    "depth": 4,
+    "epochs": 800,
+    "epochs_fno": 600,
+    "fno_width": 20,
+    "fno_modes": 12,
+    "fno_layers": 4,
+    "batch": 32,
+    "lr": 0.001,
+    "weight_decay": 1e-06,
+    "w_data": 1.0,
+    "w_pde": 0.01,
+    "sched_step": 400,
+    "sched_gamma": 0.5,
+    "eval_every": 20,
+    "seed_train": 42,
+    "seed_val": 7,
+    "seed_test": 999,
+    "selection": "min validation displacement error"
+  },
+  "runs": [
+    {
+      "model": "pi_spectral_anchored",
+      "seed": 42,
+      "trunk": 64,
+      "w_pde": 0.01,
+      "val_error": 0.10604363679885864,
+      "test_error": 0.09853005409240723,
+      "selected_epoch": 720,
+      "n_params": 177152,
+      "single_query_ms": 2.5446455692872405,
+      "batched_ms_per_sample": 0.04871153942076489,
+      "minutes": 12.799111890792847
+    },
+    {
+      "model": "pi_spectral_anchored",
+      "seed": 43,
+      "trunk": 64,
+      "w_pde": 0.01,
+      "val_error": 0.05916791781783104,
+      "test_error": 0.05982089042663574,
+      "selected_epoch": 560,
+      "n_params": 177152,
+      "single_query_ms": 2.5527895195409656,
+      "batched_ms_per_sample": 0.04951860501023475,
+      "minutes": 12.53710275888443
+    },
+    {
+      "model": "pi_spectral_anchored",
+      "seed": 44,
+      "trunk": 64,
+      "w_pde": 0.01,
+      "val_error": 0.08079618215560913,
+      "test_error": 0.08159323781728745,
+      "selected_epoch": 780,
+      "n_params": 177152,
+      "single_query_ms": 2.534975530579686,
+      "batched_ms_per_sample": 0.046369109441002365,
+      "minutes": 12.457782991727193
+    }
+  ],
+  "closed_form": {
+    "test_error": 5.376728040573653e-07,
+    "single_query_ms": 2.455055364407599,
+    "batched_ms_per_sample": 0.04586228442349238,
+    "n_params": 16512
+  },
+  "aggregate": {
+    "pi_spectral_anchored": {
+      "mean": 0.07998139411211014,
+      "std": 0.01584399713925983,
+      "n_seeds": 3,
+      "values": [
+        0.09853005409240723,
+        0.05982089042663574,
+        0.08159323781728745
+      ]
+    }
+  }
+}

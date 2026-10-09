@@ -1,7 +1,7 @@
 """Closed-form linear least-squares read-out from the same branch features.
 The target operator is linear, so this is the natural optimal-linear baseline."""
-import sys, json
-sys.path.insert(0, "/sessions/serene-elegant-cannon/mnt/CMAME")
+import os, sys, json
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np, torch
 import cmame_extended_study as st
 
@@ -54,5 +54,5 @@ for kind in ("bumps", "patch"):
          "test_f": torch.tensor(z["f_te"]), "test_u": torch.tensor(z["u_te"]),
          "modes": st.build_modes(16)}
     rows.append(fit_eval(f"lin_{kind}_n1000", d, phys))
-with open("/sessions/serene-elegant-cannon/mnt/CMAME/results_revision/chunk_results.jsonl","a") as fh:
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "results_revision", "chunk_results.jsonl"),"a") as fh:
     for r in rows: fh.write(json.dumps(r)+"\n")

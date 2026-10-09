@@ -1,0 +1,234 @@
+{
+  "config": {
+    "n_train": 3000,
+    "n_val": 400,
+    "n_test": 200,
+    "true_modes": 16,
+    "coeff_scale": 0.04,
+    "hidden": 192,
+    "depth": 4,
+    "epochs": 800,
+    "epochs_fno": 600,
+    "fno_width": 20,
+    "fno_modes": 12,
+    "fno_layers": 4,
+    "batch": 32,
+    "lr": 0.001,
+    "weight_decay": 1e-06,
+    "w_data": 1.0,
+    "w_pde": 0.0001,
+    "sched_step": 400,
+    "sched_gamma": 0.5,
+    "eval_every": 20,
+    "seed_train": 42,
+    "seed_val": 7,
+    "seed_test": 999,
+    "selection": "min validation displacement error"
+  },
+  "runs": [
+    {
+      "model": "pi_spectral_plain",
+      "seed": 42,
+      "trunk": 64,
+      "w_pde": 0.0001,
+      "val_error": 0.13437026739120483,
+      "test_error": 0.13295550644397736,
+      "selected_epoch": 120,
+      "n_params": 160640,
+      "single_query_ms": 2.507118999346858,
+      "batched_ms_per_sample": 0.039959359369845515,
+      "minutes": 10.506424955526988
+    },
+    {
+      "model": "data_only_spectral",
+      "seed": 42,
+      "trunk": 64,
+      "w_pde": 0.0,
+      "val_error": 0.234439417719841,
+      "test_error": 0.22972622513771057,
+      "selected_epoch": 700,
+      "n_params": 160640,
+      "single_query_ms": 2.5451074998272816,
+      "batched_ms_per_sample": 0.08754835157276375,
+      "minutes": 6.500860488414764
+    },
+    {
+      "model": "pi_spectral_anchored",
+      "seed": 42,
+      "trunk": 64,
+      "w_pde": 0.0001,
+      "val_error": 0.004042402375489473,
+      "test_error": 0.004023530054837465,
+      "selected_epoch": 420,
+      "n_params": 177152,
+      "single_query_ms": 2.5132444989139913,
+      "batched_ms_per_sample": 0.038757402336386804,
+      "minutes": 10.375434422492981
+    },
+    {
+      "model": "fno",
+      "seed": 42,
+      "trunk": 64,
+      "w_pde": 0.0001,
+      "val_error": 0.10576870292425156,
+      "test_error": 0.10398400574922562,
+      "selected_epoch": 600,
+      "n_params": 465526,
+      "single_query_ms": 16.413116001785966,
+      "batched_ms_per_sample": 5.446366316419926,
+      "minutes": 10.610971983273824
+    },
+    {
+      "model": "pi_spectral_plain",
+      "seed": 43,
+      "trunk": 64,
+      "w_pde": 0.0001,
+      "val_error": 0.15123890340328217,
+      "test_error": 0.15198834240436554,
+      "selected_epoch": 80,
+      "n_params": 160640,
+      "single_query_ms": 2.502899500541389,
+      "batched_ms_per_sample": 0.03158572656047909,
+      "minutes": 10.047463675340017
+    },
+    {
+      "model": "data_only_spectral",
+      "seed": 43,
+      "trunk": 64,
+      "w_pde": 0.0,
+      "val_error": 0.23364870250225067,
+      "test_error": 0.2284737080335617,
+      "selected_epoch": 720,
+      "n_params": 160640,
+      "single_query_ms": 2.541966498029069,
+      "batched_ms_per_sample": 0.08087254688859957,
+      "minutes": 6.407082732518514
+    },
+    {
+      "model": "pi_spectral_anchored",
+      "seed": 43,
+      "trunk": 64,
+      "w_pde": 0.0001,
+      "val_error": 0.004781865980476141,
+      "test_error": 0.004885328002274036,
+      "selected_epoch": 420,
+      "n_params": 177152,
+      "single_query_ms": 2.508237499569077,
+      "batched_ms_per_sample": 0.03133840625935136,
+      "minutes": 10.234497026602428
+    },
+    {
+      "model": "fno",
+      "seed": 43,
+      "trunk": 64,
+      "w_pde": 0.0001,
+      "val_error": 0.10982968658208847,
+      "test_error": 0.10894127190113068,
+      "selected_epoch": 580,
+      "n_params": 465526,
+      "single_query_ms": 15.067293501488166,
+      "batched_ms_per_sample": 4.291399429689591,
+      "minutes": 10.045451847712199
+    },
+    {
+      "model": "pi_spectral_plain",
+      "seed": 44,
+      "trunk": 64,
+      "w_pde": 0.0001,
+      "val_error": 0.1490548551082611,
+      "test_error": 0.1477721631526947,
+      "selected_epoch": 560,
+      "n_params": 160640,
+      "single_query_ms": 2.46382749901386,
+      "batched_ms_per_sample": 0.030899859368105353,
+      "minutes": 9.950944630304972
+    },
+    {
+      "model": "data_only_spectral",
+      "seed": 44,
+      "trunk": 64,
+      "w_pde": 0.0,
+      "val_error": 0.2340712994337082,
+      "test_error": 0.23042738437652588,
+      "selected_epoch": 560,
+      "n_params": 160640,
+      "single_query_ms": 2.530981500967755,
+      "batched_ms_per_sample": 0.0813361835980686,
+      "minutes": 6.348004178206126
+    },
+    {
+      "model": "pi_spectral_anchored",
+      "seed": 44,
+      "trunk": 64,
+      "w_pde": 0.0001,
+      "val_error": 0.004070958588272333,
+      "test_error": 0.004041674081236124,
+      "selected_epoch": 420,
+      "n_params": 177152,
+      "single_query_ms": 2.4916854981711367,
+      "batched_ms_per_sample": 0.031427117207272204,
+      "minutes": 10.177791730562847
+    },
+    {
+      "model": "fno",
+      "seed": 44,
+      "trunk": 64,
+      "w_pde": 0.0001,
+      "val_error": 0.12330576032400131,
+      "test_error": 0.12070497870445251,
+      "selected_epoch": 600,
+      "n_params": 465526,
+      "single_query_ms": 12.832774500566302,
+      "batched_ms_per_sample": 1.8995291874972509,
+      "minutes": 9.944801449775696
+    }
+  ],
+  "closed_form": {
+    "test_error": 4.991333639736695e-07,
+    "single_query_ms": 2.364180001677596,
+    "batched_ms_per_sample": 0.03295894140364908,
+    "n_params": 16512
+  },
+  "aggregate": {
+    "pi_spectral_plain": {
+      "mean": 0.14423867066701254,
+      "std": 0.008161960060081184,
+      "n_seeds": 3,
+      "values": [
+        0.13295550644397736,
+        0.15198834240436554,
+        0.1477721631526947
+      ]
+    },
+    "data_only_spectral": {
+      "mean": 0.2295424391825994,
+      "std": 0.0008081030343698193,
+      "n_seeds": 3,
+      "values": [
+        0.22972622513771057,
+        0.2284737080335617,
+        0.23042738437652588
+      ]
+    },
+    "pi_spectral_anchored": {
+      "mean": 0.004316844046115875,
+      "std": 0.0004020471014946834,
+      "n_seeds": 3,
+      "values": [
+        0.004023530054837465,
+        0.004885328002274036,
+        0.004041674081236124
+      ]
+    },
+    "fno": {
+      "mean": 0.11121008545160294,
+      "std": 0.007012292556050517,
+      "n_seeds": 3,
+      "values": [
+        0.10398400574922562,
+        0.10894127190113068,
+        0.12070497870445251
+      ]
+    }
+  }
+}

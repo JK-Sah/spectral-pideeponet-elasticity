@@ -30,10 +30,11 @@ romA = json.load(open(RES / "rom_baseline.json"))
 # hardcoded here was stale: the figure carried 0.85, 1.05, 2.50, 15.9 ms while
 # the measured values are 1.02, 1.18, 3.14, 12.66.  Accuracy still comes from
 # the accuracy files, which is where it belongs.
-CL = json.load(open(RES / "linear" / "timing_classical_all.json"))
-LIN = {M: json.load(open(RES / "linear" / f"timing_linear_v3_M{M}.json"))
+LS = RES / "r1" / "w" / "linear_sel"      # per-model selected checkpoints, one timing job
+CL = json.load(open(LS / "timing_classical_all.json"))
+LIN = {M: json.load(open(LS / f"timing_linear_v3_M{M}.json"))
        for M in (16, 64)}
-CAP = json.load(open(RES / "linear" / "capacity_sweep.json"))
+CAP = json.load(open(LS / "capacity_sweep.json"))
 REPORTED = ["blocked/flush_denormal", "flush_denormal",
             "interleaved/flush_denormal", "blocked/as_is", "as_is"]
 
@@ -95,39 +96,55 @@ class Bench:
                 return r
         return None
 
-    def point(self, model, fallback, w_pde=1e-4):
-        """Single-query cost and error of one trained variant.
+    def point(self, prefix):
+        """Single-query cost and error of one trained configuration.
 
-        Entries are keyed by checkpoint, so a directory holding both the
-        physics-informed and the data-only variant of an architecture gives two
-        matches; pick the one asked for rather than whichever sorts last.
+        prefix names the checkpoint family, e.g. "fno_e_wpde0.01"; the error is
+        the mean over its seeds and the latency the median, as in the ledgers.
         """
-        # Two file formats exist: entries keyed by checkpoint carry a "model"
-        # field, earlier ones were keyed by the model name itself and carry no
-        # such field. Match either, so a figure never silently reverts to a
-        # hardcoded fallback because of the file's vintage.
-        cands = [v for k, v in self.neural.items()
-                 if v.get("model") == model or k == model or k.startswith(model + "_")]
-        if not cands:
-            raise KeyError(f"{self.label}: no checkpoint matching {model!r} in "
+        runs = [v for k, v in self.neural.items() if k.startswith(prefix + "_seed")]
+        if not runs:
+            raise KeyError(f"{self.label}: no checkpoint matching {prefix!r} in "
                            f"{sorted(self.neural)} -- refusing to fall back "
                            f"silently to a hardcoded point")
-        exact = [v for v in cands if v.get("w_pde") == w_pde]
-        n = (exact or cands)[0]
-        if n.get("rel_l2_u") is None:
-            raise KeyError(f"{self.label}: {model} has no recorded error")
-        return n["single_query_ms"], n["rel_l2_u"]
+        return (float(np.median([v["single_query_ms"] for v in runs])),
+                float(np.mean([v["rel_l2_u"] for v in runs])))
+
+
+# Residual weights chosen on validation for each model (select_per_model.py).
+SEL = json.load(open(RES / "r1" / "w" / "selected_per_model.json"))["selected"]
+
+
+def tag(model, key):
+    return f"{model}_wpde{SEL[key]['w']:g}"
+
+
+# best spectral trunk on the smooth field: lowest validation error among the
+# trunk sizes, each at its own weight
+BEST_M = min((k for k in SEL if k.startswith("het_spectral_e_M")),
+             key=lambda k: SEL[k]["val_mean"]).split("_M")[1]
+SMOOTH_FNO, SMOOTH_SPEC = tag("fno_e", "het_fno_e"), tag(f"spectral_e_M{BEST_M}", f"het_spectral_e_M{BEST_M}")
+ROUGH_FNO, ROUGH_SPEC = tag("fno_e", "rough_fno_e"), tag("spectral_e_M64", "rough_spectral_e_M64")
 
 
 SMOOTH_B = Bench(RES / "rom_field.json",
-                 RES / "hetero" / "timing_smooth.json", "smooth field")
+                 RES / "r1" / "w" / "routeb" / "timing_smooth.json", "smooth field")
 ROUGH_B = Bench(RES / "rough" / "rom_field.json",
-                RES / "hetero" / "timing_rough.json", "rough field")
+                RES / "r1" / "w" / "routeb" / "timing_rough.json", "rough field")
 
 plt.rcParams.update({"font.size": 10, "font.family": "serif",
                      "axes.grid": True, "grid.alpha": 0.3, "lines.markersize": 7})
 
 C_FEM, C_ROM, C_CF, C_SPEC, C_FNO = "#1b7837", "#2166ac", "#762a83", "#d6604d", "#e08214"
+
+
+def plain_log(axis):
+    """Ticks at 1, 2, 5 x 10^k with plain labels, for log axes spanning about a
+    decade, where the default minor labels (3x10^0, 4x10^0, ...) collide."""
+    from matplotlib.ticker import FuncFormatter, LogLocator, NullFormatter
+    axis.set_major_locator(LogLocator(base=10, subs=(1.0, 2.0, 5.0)))
+    axis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g}"))
+    axis.set_minor_formatter(NullFormatter())
 
 
 def rows(bench, method):
@@ -188,14 +205,15 @@ for r in rb:
     if r in (32, 128, 256):
         axB.annotate(f"r={r}", (B.rom_ms[r], B.rom_err[r]),
                      textcoords="offset points", xytext=(4, 5), fontsize=7)
-fx, fy = B.point("fno_e", (1.45, 0.189))
-sx, sy = B.point("spectral_e", (0.031, 0.384))
+fx, fy = B.point(SMOOTH_FNO)
+sx, sy = B.point(SMOOTH_SPEC)
 axB.plot([fx], [fy], "P", color=C_FNO, label="FNO + physics")
-axB.plot([sx], [sy], "D", color=C_SPEC, label="PI-spectral DeepONet")
+axB.plot([sx], [sy], "D", color=C_SPEC, label=f"PI-spectral DeepONet ($M$={BEST_M})")
 axB.set_xscale("log"); axB.set_yscale("log")
 axB.set_xlabel("Per-query time (ms)"); axB.set_ylabel(r"Displacement rel. $L^2$ error")
 axB.set_title("(b) Heterogeneous $E(\\mathbf{x})$, per-query operator")
-axB.legend(fontsize=7.3, loc="lower left")
+plain_log(axB.xaxis)
+axB.legend(fontsize=7.3, loc="center right", bbox_to_anchor=(1.0, 0.42))
 
 fig.tight_layout()
 fig.savefig(OUT / "Figure_11_pareto.pdf")
@@ -205,7 +223,7 @@ plt.close(fig)
 # ---------------------------------------------------------------- Fig 6 (seed repeatability)
 # Canonical configuration, seeds 42/43/44.  The earlier version of this figure
 # showed a different (sweep-optimum) setting and is superseded.
-seedm = json.load(open(RES / "linear" / "canonical_seed_metrics.json"))["per_seed"]
+seedm = json.load(open(LS / "canonical_seed_metrics.json"))["per_seed"]
 keys = [("disp", "Disp."), ("strain", "Strain"), ("stress", "Stress"),
         ("energy", "Energy")]
 means = [100 * np.mean([seedm[s][k] for s in seedm]) for k, _ in keys]
@@ -254,11 +272,12 @@ ax2.plot(ranks, [B.rom_ms[r] for r in ranks], "-^", color=C_FNO,
          label="ROM time/query")
 ax2.axhline(B.fem_ms, color=C_FEM, ls="--", lw=1.3,
             label=f"FEM/query ({B.fem_ms:.1f} ms)")
-surr = B.point("spectral_e", (0.03, None))[0]
+surr = B.point(SMOOTH_SPEC)[0]
 ax2.axhline(surr, color=C_SPEC, ls=":", lw=1.3,
-            label=f"Surrogate inference ({surr:.2f} ms)")
+            label=f"Spectral DeepONet, $M$={BEST_M} ({surr:.2f} ms)")
 ax2.set_ylabel("Per-query time (ms)", color=C_FNO)
 ax2.set_yscale("log"); ax2.tick_params(axis="y", labelcolor=C_FNO)
+plain_log(ax2.yaxis)
 
 # Annotate the crossing only where one is actually measured. On the smooth
 # field under the controlled timings the reduced model stays below the
@@ -288,75 +307,42 @@ fig.savefig(OUT / "Figure_13_rom_cliff.pdf")
 plt.close(fig)
 
 # ---------------------------------------------------------------- Fig 14 (crossover)
-# Smooth vs rough E(x): the Pareto frontier flips. On the smooth field the ROM
-# dominates and the FNO is off-frontier; on the rough field the ROM's cost
-# cliffs and the FNO moves onto the frontier.
+# Smooth vs rough E(x). On the smooth field the ROM dominates; on the rough
+# field its rank, and with it its cost, passes the finite-element solve, but no
+# learned operator takes the frontier as a single query.
 fig, (axs, axr) = plt.subplots(1, 2, figsize=(9.4, 4.2), sharey=True)
 
 
-def pareto_panel(ax, B, fno_fb, spec_fb, title):
+def pareto_panel(ax, B, fno, spec, spec_label, title, legend=dict(loc="lower left")):
     rb = B.ranks()
     ax.plot([B.rom_ms[r] for r in rb], [B.rom_err[r] for r in rb], "-s",
             color=C_ROM, label="POD--Galerkin ROM (rank)")
     ax.plot([B.fem_ms], [B.fem_err], "o", color=C_FEM, markersize=9,
             label="FEM $28\\times28$ (per query)")
-    fx, fy = B.point("fno_e", fno_fb)
-    sx, sy = B.point("spectral_e", spec_fb)
+    fx, fy = B.point(fno)
+    sx, sy = B.point(spec)
     ax.plot([fx], [fy], "P", color=C_FNO, markersize=11, label="FNO")
-    ax.plot([sx], [sy], "D", color=C_SPEC, markersize=9,
-            label="Spectral DeepONet")
+    ax.plot([sx], [sy], "D", color=C_SPEC, markersize=9, label=spec_label)
     ax.set_xscale("log"); ax.set_yscale("log")
-    ax.set_xlabel("Per-query time (ms)"); ax.set_title(title)
+    ax.set_xlabel("Single-query time (ms)"); ax.set_title(title)
+    plain_log(ax.xaxis)
+    ax.legend(fontsize=7.6, **legend)
 
 
-pareto_panel(axs, SMOOTH_B, (1.45, 0.189), (0.031, 0.384),
-             "(a) Smooth $E(\\mathbf{x})$")
-pareto_panel(axr, ROUGH_B, (1.45, 0.2448), (0.031, 0.7109),
+pareto_panel(axs, SMOOTH_B, SMOOTH_FNO, SMOOTH_SPEC, f"Spectral DeepONet ($M$={BEST_M})",
+             "(a) Smooth $E(\\mathbf{x})$", dict(loc="center right", bbox_to_anchor=(1.0, 0.42)))
+pareto_panel(axr, ROUGH_B, ROUGH_FNO, ROUGH_SPEC, "Spectral DeepONet ($M$=64)",
              "(b) Rough $E(\\mathbf{x})$")
 axs.set_ylabel(r"Displacement rel. $L^2$ error")
-axr.legend(fontsize=7.6, loc="lower left")
 fig.tight_layout()
 fig.savefig(OUT / "Figure_14_crossover.pdf")
 plt.close(fig)
 
 # ---------------------------------------------------------------- Fig 15 (nonlinear)
-# Finite-strain hyperelasticity: the neural operator dominates the reduced-order
-# models -- the flip from the linear case.
-nl = json.load(open(RES / "nonlinear" / "ledger.json"))
-fig, ax = plt.subplots(figsize=(5.8, 4.4))
-style = {
-    "POD-Galerkin(r=32)": ("POD--Galerkin", C_ROM, "s"),
-    "POD-DEIM(r=32,m=128)": ("POD--DEIM (hyper-reduced)", "#2166ac", "^"),
-    "FNO": ("FNO", C_FNO, "P"),
-    "Spectral": ("Spectral DeepONet", C_SPEC, "D"),
-}
-for key, (lab, col, mk) in style.items():
-    d = nl[key]
-    ax.plot([d["ms"]], [d["err"]], mk, color=col, markersize=12, label=lab)
-# Newton-FEM is exact (err=0): draw as a reference line at its cost.
-ax.axvline(nl["Newton-FEM"]["ms"], color=C_FEM, ls="--", lw=1.4)
-errs_all = [nl[k]["err"] for k in style]
-ax.annotate("Newton-FEM (reference, %.0f ms)" % nl["Newton-FEM"]["ms"],
-            xy=(nl["Newton-FEM"]["ms"], np.sqrt(min(errs_all) * max(errs_all))),
-            fontsize=8, color=C_FEM, ha="right", va="center", rotation=90,
-            xytext=(-4, 0), textcoords="offset points")
-ax.set_xscale("log"); ax.set_yscale("log")
-ax.set_xlabel("Per-query time (ms)")
-ax.set_ylabel(r"Displacement rel. $L^2$ error")
-ax.set_title("Finite-strain hyperelasticity: a learned operator\n"
-             "reaches the accuracy-cost frontier")
-ax.legend(fontsize=8, loc="upper left", framealpha=0.95)
-ax.annotate("", xy=(nl["FNO"]["ms"], nl["FNO"]["err"]),
-            xytext=(nl["POD-Galerkin(r=32)"]["ms"], nl["POD-Galerkin(r=32)"]["err"]),
-            arrowprops=dict(arrowstyle="<->", color="#777777", lw=1.1))
-ax.text(np.sqrt(nl["FNO"]["ms"] * nl["POD-Galerkin(r=32)"]["ms"]),
-        nl["FNO"]["err"] * 0.90, "~8x", fontsize=9, color="#555555",
-        ha="center", va="top")
-ax.text(0.02, 0.03, "matched accuracy, ~8x lower cost per query",
-        transform=ax.transAxes, fontsize=8, color="#555555", ha="left")
-fig.tight_layout()
-fig.savefig(OUT / "Figure_15_nonlinear.pdf")
-plt.close(fig)
+# Finite-strain hyperelasticity, built from the measurement files by
+# fig15_nonlinear.py (which also writes results_revision/nonlinear/ledger.json).
+import fig15_nonlinear
+fig15_nonlinear.plot(fig15_nonlinear.build_ledger(), OUT, (C_FEM, C_ROM, C_SPEC, C_FNO))
 
 print("wrote Figure_6_seed_repeatability.pdf, Figure_11_pareto.pdf, Figure_12_pod_spectrum.pdf, "
       "Figure_13_rom_cliff.pdf, Figure_14_crossover.pdf, Figure_15_nonlinear.pdf")

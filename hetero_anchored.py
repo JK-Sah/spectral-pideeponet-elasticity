@@ -133,6 +133,8 @@ def main():
     ap.add_argument("--w_pde", type=float, default=1e-4)
     ap.add_argument("--eval_every", type=int, default=20)
     ap.add_argument("--val_frac", type=float, default=0.20)
+    ap.add_argument("--split_seed", type=int, default=42,
+                    help="seed of the train/validation split, fixed across initialization seeds")
     ap.add_argument("--res", type=int, default=29)
     ap.add_argument("--nu", type=float, default=0.30)
     ap.add_argument("--device", default="auto")
@@ -144,7 +146,7 @@ def main():
     modes, cos_modes = build_modes(a.modes), build_cos_modes(a.cos_modes)
     f_tr, E_tr, u_tr, f_te, E_te, u_te = load_data(a.data)
 
-    g = np.random.default_rng(a.seeds[0])
+    g = np.random.default_rng(a.split_seed)
     perm = g.permutation(f_tr.shape[0])
     nval = int(round(a.val_frac * f_tr.shape[0]))
     vi, ti = perm[:nval], perm[nval:]

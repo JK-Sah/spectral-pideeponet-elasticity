@@ -182,6 +182,10 @@ def main():
                     help="spectral trunk capacity M (default: equal to the "
                          "data-generation mode count K)")
     ap.add_argument("--ckpt_dir", default="")
+    ap.add_argument("--w_pde", type=float, default=CFG["w_pde"],
+                    help="residual weight of every physics-informed model (validation-chosen)")
+    ap.add_argument("--models", nargs="+", default=["pi_spectral_plain", "data_only_spectral",
+                                                    "pi_spectral_anchored", "fno"])
     ap.add_argument("--device", default="auto")
     ap.add_argument("--out", default="results_revision/canonical_linear.json")
     a = ap.parse_args()
@@ -189,6 +193,7 @@ def main():
     phys = PhysicsConfig()
     M_trunk = a.trunk or CFG["true_modes"]
     modes = build_modes(M_trunk)
+    CFG["w_pde"] = a.w_pde
     print(f"device={dev}\ncanonical config: {CFG}\ntrunk M={M_trunk}")
 
     d_main = make_dataset(CFG["n_train"], CFG["n_test"], CFG["true_modes"],
@@ -222,6 +227,8 @@ def main():
                            ("data_only_spectral", 0.0),
                            ("pi_spectral_anchored", CFG["w_pde"]),
                            ("fno", CFG["w_pde"])):
+            if tag not in a.models:
+                continue
             set_seed(seed)
             if tag == "pi_spectral_anchored":
                 m = AnchoredSpectral(modes, phys, tr[0], tr[1],

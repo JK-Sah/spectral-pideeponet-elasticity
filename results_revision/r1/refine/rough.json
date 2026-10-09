@@ -1,0 +1,12 @@
+{
+  "data": "/shared/rc/whiskers/JK/cmame_pideeponet/data_rough/hetero_field.npz",
+  "corr": 1.0,
+  "n_eval": 400,
+  "field_regeneration_max_abs_diff": 6.042273327011571e-06,
+  "reference": "Q4 on the 113x113 node mesh",
+  "errors": {
+    "14x14": 0.18554748991989825,
+    "28x28": 0.07359251848261382,
+    "56x56": 0.01755000011872452
+  }
+}

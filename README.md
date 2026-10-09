@@ -72,3 +72,36 @@ hyper-reduced reduced-order model.
 | `nonlinear_ledger.py` | Final accuracy--cost ledger (Newton-FEM, POD--Galerkin, POD--DEIM, neural), all timed on one CPU with the analytical tangent |
 | `nonlinear_rom.py` | Standalone reduced-order-model utilities for the nonlinear case |
 | `make_figures.py` | Figures 14 (smooth/rough crossover) and 15 (nonlinear Pareto) |
+
+## Revision (R1) scripts
+
+The revised paper's numbers come from the scripts below. Each learned model is
+selected on a validation split and the test set is evaluated once; the
+residual weight is chosen on validation for every model. Older scripts that
+selected on the test set or timed batched throughput as latency
+(`continuum_elasticity_pideeponet_publication_study.py`,
+`cmame_extended_study.py`, `revision_chunk_runner.py`, `nonlinear_train.py`,
+`time_nonlinear_cpu.py`) are kept for provenance, each with a note at the top
+saying what replaces it.
+
+| Script | Purpose |
+|---|---|
+| `canonical_linear.py` | Canonical configuration of the manufactured benchmark (plain, anchored, data-only spectral branches and FNO, seeds 42-44) |
+| `ablation_canonical.py` | Residual-weight, trunk-capacity and training-size ablations under the canonical protocol |
+| `aux_linear_v2.py` | Poisson-ratio sweep, out-of-distribution ablation, capacity-matched FNO, non-sine forcing families |
+| `gen_forcing_v2.py` | Non-sine forcing data (Gaussian bumps, patch loads) with the refined-mesh FEM reference |
+| `eval_canonical_extras.py` | Noise, out-of-distribution and field-snapshot evaluations from the canonical checkpoints |
+| `select_per_model.py`, `select_forcing.py`, `select_weights.py` | Residual weight per model and per benchmark, chosen on validation error |
+| `route_b.py` | Heterogeneous and rough modulus-field training (validation-selected) |
+| `hetero_anchored.py` | Anchored vs plain branch on the heterogeneous benchmark |
+| `hetero_fem_refine.py` | FEM mesh refinement on the smooth and rough modulus fields |
+| `nonlinear_gen.py`, `nonlinear_fem_fast.py` | Finite-strain data generation and the vectorized Newton solver |
+| `nonlinear_train_v2.py` | Finite-strain operator training with a train/validation/test split |
+| `nonlinear_classical_full.py`, `pod_deim_v2.py` | POD-Galerkin and POD-DEIM on all 397 test cases, DEIM size chosen on validation |
+| `timing_linear_v3.py`, `timing_classical_all.py`, `timing_hetero_all.py`, `timing_nonlinear_v3.py` | Every timing in the paper: trained checkpoints, single-query and batched, exclusive four-thread allocation |
+| `collect_r1.py`, `build_linear_sel_summaries.py` | Collect result files and print the quantities quoted in the paper |
+| `make_r1_figures.py`, `make_metric_figures.py`, `make_figures.py`, `fig15_nonlinear.py`, `make_timing_tables.py` | Figures and table bodies, generated from the result files in `results_revision/` |
+
+## License
+
+MIT; see `LICENSE`.
