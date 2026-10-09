@@ -117,6 +117,7 @@ def plot(L, out, colors):
 def main(out="../CompMech_submission_ready", colors=("#1b7837", "#2166ac", "#d6604d", "#e08214")):
     plt.rcParams.update({"font.size": 10, "font.family": "serif",
                          "axes.grid": True, "grid.alpha": 0.3, "lines.markersize": 7})
+    Path(out).mkdir(parents=True, exist_ok=True)
     L = build_ledger()
     plot(L, out, colors)
     for k, v in L.items():

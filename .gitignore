@@ -7,3 +7,5 @@ data/
 results_elasticity_publication/
 *.npz
 *.pt
+# field snapshot behind Figs 3-4 (37 KB); kept so every figure regenerates from the repo
+!results_revision/r1/w/linear_sel/canonical_extras.snapshot.npz

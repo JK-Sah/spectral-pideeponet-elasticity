@@ -22,6 +22,7 @@ import numpy as np
 
 RES = Path("results_revision")
 OUT = Path("../CompMech_submission_ready")
+OUT.mkdir(parents=True, exist_ok=True)   # the manuscript folder; created in a fresh checkout
 ledger = json.load(open(RES / "ledger.json"))
 romA = json.load(open(RES / "rom_baseline.json"))
 

@@ -33,6 +33,7 @@ from cmame_extended_study import PhysicsConfig, fd_strain_stress
 RES = Path("results_revision")
 R1 = RES / "r1"
 OUT = Path("../CompMech_submission_ready")
+OUT.mkdir(parents=True, exist_ok=True)   # the manuscript folder; created in a fresh checkout
 plt.rcParams.update({"font.size": 9, "axes.titlesize": 9.5, "savefig.bbox": "tight",
                      "savefig.dpi": 300, "font.family": "serif"})
 COL = {"pi_spectral_plain": "#1f5aa6", "data_only_spectral": "#c0392b", "fno": "#27864a",

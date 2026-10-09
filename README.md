@@ -102,6 +102,11 @@ saying what replaces it.
 | `collect_r1.py`, `build_linear_sel_summaries.py` | Collect result files and print the quantities quoted in the paper |
 | `make_r1_figures.py`, `make_metric_figures.py`, `make_figures.py`, `fig15_nonlinear.py`, `make_timing_tables.py` | Figures and table bodies, generated from the result files in `results_revision/` |
 
+Run the figure and table scripts from the repository root. They read only the
+files in `results_revision/` and write the figures to
+`../CompMech_submission_ready/` (the manuscript folder next to the
+repository), which they create if it does not exist.
+
 ## License
 
 MIT; see `LICENSE`.
