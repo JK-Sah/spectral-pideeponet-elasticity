@@ -28,6 +28,7 @@ import numpy as np
 
 RES = Path("results_revision/r1/w/linear_sel")   # per-model selected checkpoints
 OUT = Path("../CompMech_submission_ready")
+OUT.mkdir(parents=True, exist_ok=True)   # the manuscript folder; created in a fresh checkout
 
 plt.rcParams.update({"font.size": 10, "font.family": "serif",
                      "axes.grid": True, "grid.alpha": 0.3, "lines.markersize": 7})
